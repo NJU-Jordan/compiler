@@ -12,9 +12,9 @@ public class Main
             if (args.length < 1) {
                 System.err.println("input path is required");
             }
-          //  String source = args[0];
-           // CharStream input = CharStreams.fromFileName(source);
-         SysYLexer sysYLexer = new SysYLexer(input);
+            String source = args[0];
+           CharStream input = CharStreams.fromFileName(source);
+     //    SysYLexer sysYLexer = new SysYLexer(input);
         System.out.println(2);
     }
 

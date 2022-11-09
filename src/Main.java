@@ -7,6 +7,7 @@ public class Main
       //  String cmd="";
       //  Scanner scanner=new Scanner(System.in);
       //  cmd=scanner.nextLine();
+
       //  String[]opts=cmd.split(" ");
         if(args[0].equals("cat")){
             File file=new File(args[1]);

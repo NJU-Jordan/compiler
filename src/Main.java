@@ -14,7 +14,7 @@ public class Main
             }
           //  String source = args[0];
            // CharStream input = CharStreams.fromFileName(source);
-         // SysYLexer sysYLexer = new SysYLexer(input);
+         SysYLexer sysYLexer = new SysYLexer(input);
         System.out.println(2);
     }
 

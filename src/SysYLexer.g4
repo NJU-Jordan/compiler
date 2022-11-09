@@ -1,17 +1,6 @@
-grammar SysYLexer;
+lexer grammar SysYLexer;
 
-prog : stat* EOF;
 
-stat: expr ';'
-      | ID '=' expr ';'
-      | 'if' expr ';'
-      ;
-
-expr: expr ('*'|'/') expr
-     | expr ('+'|'-') expr
-     | ID
-     | INT
-     ;
 
 ID : (LETTER | '_')(LETTER |DIGIT | '_')*;
 

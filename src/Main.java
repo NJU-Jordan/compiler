@@ -19,9 +19,9 @@ public class Main
         sysYLexer.removeErrorListeners();
      //   ErrorListener myErrorListener=new ErrorListener();
      //   sysYLexer.addErrorListener(myErrorListener);
-      List<?extends org.antlr.v4.runtime.Token> tokens =sysYLexer.getAllTokens();
+      List<?extends Token> tokens =sysYLexer.getAllTokens();
         for(Token token:tokens){
-            System.out.println(token);
+            System.out.println(token.getLine());
         }
 
 

@@ -66,7 +66,7 @@ COMMA : ',';
 
 SEMICOLON : ';';
 
-IDENT :  (LETTER | '_')(LETTER | DIGIT | '_');
+IDENT :  (LETTER | '_')(LETTER | DIGIT | '_')*;
 
 fragment DIGIT: [0-9];
 

@@ -12,16 +12,19 @@ public class Main
 {
     public static Integer toDEC(String INTEGR_CONST){
 
-        Integer result=0;
+        Integer result;
         if(INTEGR_CONST.startsWith("0x")){
             result =Integer.parseInt(INTEGR_CONST.substring(2),16);
         }else if(INTEGR_CONST.startsWith("0")){
             result = Integer.parseInt(INTEGR_CONST.substring(1),8);
         }
+        else{
+            result=Integer.parseInt(INTEGR_CONST);
+        }
         return  result;
     }
     public static void main(String[] args) throws IOException {
-        System.out.println(toDEC("013"));
+       // System.out.println(toDEC("013"));
 
         if (args.length < 1) {
             System.err.println("input path is required");
@@ -35,7 +38,11 @@ public class Main
       List<?extends Token> tokens =sysYLexer.getAllTokens();
         System.err.println(tokens);
         for(Token token:tokens){
-            System.err.println(sysYLexer.getRuleNames()[token.getType()-1]+" "+token.getText()+" at Line "+token.getLine()+".");
+            if(sysYLexer.getRuleNames()[token.getType()-1].equals("INTEGR_CONST")){
+                int  num=toDEC(token.getText());
+                System.err.println(sysYLexer.getRuleNames()[token.getType()-1]+" "+num+" at Line "+token.getLine()+".");
+            }
+            else System.err.println(sysYLexer.getRuleNames()[token.getType()-1]+" "+token.getText()+" at Line "+token.getLine()+".");
         }
 
 

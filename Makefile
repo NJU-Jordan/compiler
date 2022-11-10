@@ -19,7 +19,7 @@ compile: antlr
 	$(JAVAC) -classpath $(ANTLRPATH) $(JAVAFILE) -d classes
 
 run: compile
-	java -classpath ./classes:$(ANTLRPATH) Main $(FILEPATH)
+	java -classpath ./classes:$(ANTLRPATH) Main $(LFILE)
 
 
 antlr: $(LFILE) $(PFILE) 

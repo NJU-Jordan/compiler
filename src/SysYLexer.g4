@@ -66,6 +66,7 @@ COMMA : ',';
 
 SEMICOLON : ';';
 
+
 IDENT :  ([a-zA-Z] | '_')([a-zA-Z] | [0-9] | '_')*;
 
 

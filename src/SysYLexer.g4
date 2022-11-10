@@ -2,26 +2,85 @@ lexer grammar SysYLexer;
 
 
 
-IDENT : (LETTER | '_')(LETTER |DIGIT | '_')*;
+CONST : 'const';
 
-INT : '0' | ([1-9] [0-9]*) ;
+INT : 'int';
 
-ASSIGN : '=' ;
+VOID : 'void';
 
-L_PAREN : '(' ;
+IF : 'if';
 
-R_PAREN : ')' ;
+ELSE : 'else';
 
-L_BRACE : '{' ;
+WHILE : 'while';
 
-R_BRACE : '}' ;
+BREAK : 'break';
 
-SEMICOLON : ';' ;
+CONTINUE : 'continue';
 
-WS : [ \t\r\n]+ -> skip ;
+RETURN : 'return';
 
+PLUS : '+';
 
+MINUS : '-';
 
-fragment LETTER: [a-zA-Z] ;
-fragment DIGIT: [0-9] ;
+MUL : '*';
+
+DIV : '/';
+
+MOD : '%';
+
+ASSIGN : '=';
+
+EQ : '==';
+
+NEQ : '!=';
+
+LT : '<';
+
+GT : '>';
+
+LE : '<=';
+
+GE : '>=';
+
+NOT : '!';
+
+AND : '&&';
+
+OR : '||';
+
+L_PAREN : '(';
+
+R_PAREN : ')';
+
+L_BRACE : '{';
+
+R_BRACE : '}';
+
+L_BRACKT : '[';
+
+R_BRACKT : ']';
+
+COMMA : ',';
+
+SEMICOLON : ';';
+
+IDENT :  (LETTER | '_')(LETTER | DIGIT | '_');
+
+fragment DIGIT: [0-9];
+
+fragment LETTER: [a-zA-Z];
+
+INTEGR_CONST : DEC | OCT | HEX ;
+
+fragment DEC : '0' | ([1-9][0-9]*);
+fragment OCT : '0' '0'| ([1-7][0-7]*);
+fragment HEX : ('0x'| '0X')('0' | [1-9a-fA-F] [0-9a-fA-F]*);
+
+WS : [ \r\n\t]+ -> skip ;
+
+LINE_COMMENT : '//' .*? '\n' -> skip;
+
+MULTILINE_COMMENT : '/*' .*? '*/' -> skip ;
 

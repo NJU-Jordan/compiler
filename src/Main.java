@@ -22,6 +22,9 @@ public class Main
     }
     public static void main(String[] args) throws IOException {
         System.out.println(toDEC("0xff"));
+        String hex = "fff";
+        Integer x = Integer.parseInt(hex,16);
+        System.out.println(x);
         if (args.length < 1) {
             System.err.println("input path is required");
         }

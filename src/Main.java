@@ -16,15 +16,13 @@ public class Main
         if(INTEGR_CONST.startsWith("0x")){
             result =Integer.parseInt(INTEGR_CONST.substring(2),16);
         }else if(INTEGR_CONST.startsWith("0")){
-
+            result = Integer.parseInt(INTEGR_CONST.substring(1),8);
         }
         return  result;
     }
     public static void main(String[] args) throws IOException {
-        System.out.println(toDEC("0xff"));
-        String hex = "fff";
-        Integer x = Integer.parseInt("0xff".substring(2),16);
-        System.out.println(x);
+        System.out.println(toDEC("013"));
+
         if (args.length < 1) {
             System.err.println("input path is required");
         }

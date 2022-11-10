@@ -10,13 +10,13 @@ import java.util.Scanner;
 
 public class Main
 {
-    public static String toDEC(String INTEGR_CONST){
+    public static Integer toDEC(String INTEGR_CONST){
 
-        String result=INTEGR_CONST;
+        Integer result=0;
         if(INTEGR_CONST.startsWith("0")){
 
         }else if(INTEGR_CONST.startsWith("0x")){
-            result =String.valueOf(Integer.parseInt(INTEGR_CONST.substring(2),16));
+            result =Integer.parseInt(INTEGR_CONST.substring(2),16);
         }
         return  result;
     }

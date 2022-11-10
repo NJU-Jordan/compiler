@@ -22,7 +22,7 @@ public class Main
       List<?extends Token> tokens =sysYLexer.getAllTokens();
         System.out.println(tokens);
         for(Token token:tokens){
-            System.out.println(sysYLexer.getRuleNames()[token.getType()]+" "+token.getText()+" at Line "+token.getLine()+".");
+            System.out.println(sysYLexer.getRuleNames()[token.getType()-1]+" "+token.getText()+" at Line "+token.getLine()+".");
         }
 
 

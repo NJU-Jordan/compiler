@@ -16,12 +16,12 @@ public class Main
         if(INTEGR_CONST.startsWith("0")){
 
         }else if(INTEGR_CONST.startsWith("0x")){
-            result =String.valueOf(Integer.parseInt(INTEGR_CONST,16));
+            result =String.valueOf(Integer.parseInt(INTEGR_CONST.substring(2),16));
         }
         return  result;
     }
     public static void main(String[] args) throws IOException {
-        System.out.println(toDEC("f"));
+        System.out.println(toDEC("0xf"));
         if (args.length < 1) {
             System.err.println("input path is required");
         }

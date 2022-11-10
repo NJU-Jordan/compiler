@@ -29,12 +29,12 @@ public class Main
     public static void main(String[] args) throws IOException {
  //       System.out.println(toDEC("0"));
 // 命令行参数部分
-        if (args.length < 1) {
-            System.err.println("input path is required");
-        }
-        String source = args[0];
-        CharStream input = CharStreams.fromFileName(source);
-//        CharStream input = CharStreams.fromFileName("src/input.txt");
+//        if (args.length < 1) {
+//            System.err.println("input path is required");
+//        }
+//        String source = args[0];
+//        CharStream input = CharStreams.fromFileName(source);
+       CharStream input = CharStreams.fromFileName("src/input.txt");
         SysYLexer sysYLexer = new SysYLexer(input);
        sysYLexer.removeErrorListeners();
        ErrorListener myErrorListener=new ErrorListener();

@@ -13,10 +13,10 @@ public class Main
     public static Integer toDEC(String INTEGR_CONST){
 
         Integer result=0;
-        if(INTEGR_CONST.startsWith("0")){
-
-        }else if(INTEGR_CONST.startsWith("0x")){
+        if(INTEGR_CONST.startsWith("0x")){
             result =Integer.parseInt(INTEGR_CONST.substring(2),16);
+        }else if(INTEGR_CONST.startsWith("0")){
+
         }
         return  result;
     }

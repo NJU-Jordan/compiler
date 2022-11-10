@@ -1,8 +1,10 @@
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.Token;
 
 
 import java.io.*;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main
@@ -17,7 +19,11 @@ public class Main
         sysYLexer.removeErrorListeners();
      //   ErrorListener myErrorListener=new ErrorListener();
      //   sysYLexer.addErrorListener(myErrorListener);
-        System.out.println(sysYLexer.getAllTokens());
+      List<?extends org.antlr.v4.runtime.Token> tokens =sysYLexer.getAllTokens();
+        for(Token token:tokens){
+            System.out.println(token);
+        }
+
 
     }
 

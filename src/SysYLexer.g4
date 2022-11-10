@@ -66,11 +66,9 @@ COMMA : ',';
 
 SEMICOLON : ';';
 
-IDENT :  (LETTER | '_')(LETTER | DIGIT | '_')*;
+IDENT :  ([a-zA-Z] | '_')([a-zA-Z] | [0-9] | '_')*;
 
-fragment DIGIT: [0-9];
 
-fragment LETTER: [a-zA-Z];
 
 INTEGR_CONST : DEC | OCT | HEX ;
 

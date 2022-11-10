@@ -6,6 +6,8 @@ ID : (LETTER | '_')(LETTER |DIGIT | '_')*;
 
 INT : '0' | ([1-9] [0-9]*) ;
 
+ASSIGN : '=' ;
+
 WS : [ \t\r\n]+ -> skip ;
 
 

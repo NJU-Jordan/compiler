@@ -21,7 +21,7 @@ public class Main
      //   sysYLexer.addErrorListener(myErrorListener);
       List<?extends Token> tokens =sysYLexer.getAllTokens();
         for(Token token:tokens){
-            System.out.println(token.getType()+token.getText()+" at Line "+token.getLine());
+            System.out.println(token.getType()+" "+token.getText()+" at Line "+token.getLine());
         }
 
 

@@ -74,7 +74,7 @@ IDENT :  ([a-zA-Z] | '_')([a-zA-Z] | [0-9] | '_')*;
 INTEGR_CONST : DEC | OCT | HEX ;
 
 fragment DEC : '0' | ([1-9][0-9]*);
-fragment OCT : '0' '0'| ([1-7][0-7]*);
+fragment OCT : '0' ('0'| ([1-7][0-7]*));
 fragment HEX : ('0x'| '0X')('0' | [1-9a-fA-F] [0-9a-fA-F]*);
 
 WS : [ \r\n\t]+ -> skip ;

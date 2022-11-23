@@ -1,7 +1,4 @@
-import org.antlr.v4.runtime.CharStream;
-import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.Token;
-import org.antlr.v4.runtime.Vocabulary;
+import org.antlr.v4.runtime.*;
 
 
 import java.io.*;
@@ -27,35 +24,18 @@ public class Main
         return  result;
     }
     public static void main(String[] args) throws IOException {
- //       System.out.println(toDEC("0"));
+        //       System.out.println(toDEC("0"));
 // 命令行参数部分
         if (args.length < 1) {
             System.err.println("input path is required");
         }
         String source = args[0];
         CharStream input = CharStreams.fromFileName(source);
-     //  CharStream input = CharStreams.fromFileName("src/input.txt");
+        //  CharStream input = CharStreams.fromFileName("src/input.txt");
         SysYLexer sysYLexer = new SysYLexer(input);
-       sysYLexer.removeErrorListeners();
-       ErrorListener myErrorListener=new ErrorListener();
-       sysYLexer.addErrorListener(myErrorListener);
-      List<?extends Token> tokens =sysYLexer.getAllTokens();
-      Vocabulary vocabulary=sysYLexer.getVocabulary();
-      //词汇表中的SysmbolicName不包含fragment
-        if(myErrorListener.hasErr==1){
-            //只输出错误信息
-        }
-        else{
-            for(Token token:tokens){
-                if(sysYLexer.getRuleNames()[token.getType()-1].equals("INTEGR_CONST")){
-                    int  num=toDEC(token.getText());
-                    System.err.println(vocabulary.getSymbolicName(token.getType())+" "+num+" at Line "+token.getLine()+".");
-                }
-                else System.err.println(vocabulary.getSymbolicName(token.getType())+" "+token.getText()+" at Line "+token.getLine()+".");
-            }
-        }
 
-
+        CommonTokenStream tokens = new CommonTokenStream(sysYLexer);
+        SysYParser sysYParser = new SysYParser(tokens);
     }
 
 

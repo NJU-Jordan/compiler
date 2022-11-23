@@ -52,7 +52,7 @@ public class Visitor extends  SysYParserBaseVisitor{
         cur_depth=node.getRuleContext().depth();
         String rulename=sysYParser.getRuleNames()[index];
         String pro_rulename=rulename.substring(0,1).toUpperCase()+rulename.substring(1);
-        System.err.println(indent_of_depth(cur_depth)+pro_rulename);
+        System.err.println(indent_of_depth(cur_depth)+pro_rulename+" "+node.getChild(0).getText());
 
         return super.visitChildren(node);
     }
@@ -70,7 +70,7 @@ public class Visitor extends  SysYParserBaseVisitor{
                text=String.valueOf(toDEC(text));
            }
 
-           System.err.println(node.getParent().getText()+indent_of_depth(cur_depth)+text+" "+rule_with_colors[type]);
+           System.err.println(indent_of_depth(cur_depth)+text+" "+rule_with_colors[type]);
        }
 
       //  System.err.println(index);

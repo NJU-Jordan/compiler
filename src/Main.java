@@ -40,7 +40,7 @@ public class Main
         SysYParser sysYParser = new SysYParser(tokens);
         ParseTree tree = sysYParser.program();
         //Visitor extends SysYParserBaseVisitor<Void>
-        Visitor visitor = new Visitor(sysYParser);
+        Visitor visitor = new Visitor(sysYLexer,sysYParser);
         visitor.visit(tree);
     }
 

@@ -11,7 +11,7 @@ public class Visitor extends  SysYParserBaseVisitor{
 
     private Vocabulary vocabulary;
     private int cur_depth;  //记录当前访问树的深度
-    private String[] rule_colors= new String[] {
+    private String[] rule_with_colors= new String[] {
         null, "CONST[orange]", "INT[orange]", "VOID[orange]", "IF[orange]", "ELSE[orange]", "WHILE[orange]", "BREAK[orange]", "CONTINUE[orange]",
                 "RETURN[orange]", "PLUS[blue]", "MINUS[blue]", "MUL[blue]", "DIV[blue]", "MOD[blue]", "ASSIGN[blue]", "EQ[blue]", "NEQ[blue]",
                 "LT[blue]", "GT[blue]", "LE[blue]", "GE[blue]", "NOT[blue]", "AND[blue]", "OR[blue]", "", "", "",
@@ -42,12 +42,12 @@ public class Visitor extends  SysYParserBaseVisitor{
 
     @Override
     public Object visitTerminal(TerminalNode node) {
-       //String text=node.getText();
+       String text=node.getText();
        int type=node.getSymbol().getType();
        cur_depth++;
 
-       if(rule_colors[type].length()!=0){
-           System.err.println(indent_of_depth(cur_depth)+rule_colors[type]);
+       if(rule_with_colors[type].length()!=0){
+           System.err.println(indent_of_depth(cur_depth)+text+" "+rule_with_colors[type]);
        }
 
       //  System.err.println(index);

@@ -1,4 +1,6 @@
+import org.antlr.runtime.tree.TreeWizard;
 import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.tree.ParseTree;
 
 
 import java.io.*;
@@ -36,6 +38,10 @@ public class Main
 
         CommonTokenStream tokens = new CommonTokenStream(sysYLexer);
         SysYParser sysYParser = new SysYParser(tokens);
+        ParseTree tree = sysYParser.program();
+        //Visitor extends SysYParserBaseVisitor<Void>
+        Visitor visitor = new Visitor(sysYParser);
+        visitor.visit(tree);
     }
 
 

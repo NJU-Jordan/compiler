@@ -16,7 +16,7 @@ public class Visitor extends  SysYParserBaseVisitor{
                 "RETURN[orange]", "PLUS[blue]", "MINUS[blue]", "MUL[blue]", "DIV[blue]", "MOD[blue]", "ASSIGN[blue]", "EQ[blue]", "NEQ[blue]",
                 "LT[blue]", "GT[blue]", "LE[blue]", "GE[blue]", "NOT[blue]", "AND[blue]", "OR[blue]", "", "", "",
                 "", "", "", "", "", "IDENT[red]", "INTEGR_CONST[green]",
-                "", "", ""
+                "", "", "",""
     };
 
     public Visitor(SysYLexer sysYLexer, SysYParser sysYParser){
@@ -45,7 +45,11 @@ public class Visitor extends  SysYParserBaseVisitor{
        //String text=node.getText();
        int type=node.getSymbol().getType();
        cur_depth++;
-        System.err.println(indent_of_depth(cur_depth)+rule_colors[type]);
+
+       if(rule_colors[type].length()!=0){
+           System.err.println(indent_of_depth(cur_depth)+rule_colors[type]);
+       }
+
       //  System.err.println(index);
         cur_depth--;
         return super.visitTerminal(node);

@@ -8,18 +8,27 @@ public class Visitor extends  SysYParserBaseVisitor{
         this.sysYLexer=sysYLexer;
         this.sysYParser=sysYParser;
     }
+    public static String indent_of_depth(int depth){
+        String indent="";
+        for(int i=0;i<depth;i++){
+            indent+="  ";
+        }
+        return indent;
+    }
     @Override
     public Object visitChildren(RuleNode node) {
+
         int index=node.getRuleContext().getRuleIndex();
-        System.err.println(sysYParser.getRuleNames()[index]);
+        int depth=node.getRuleContext().depth();
+        System.err.println(indent_of_depth(depth)+sysYParser.getRuleNames()[index]);
         return super.visitChildren(node);
     }
 
     @Override
     public Object visitTerminal(TerminalNode node) {
 
-        int index=node.getSymbol().getTokenIndex();
-        System.err.println(sysYLexer.getRuleNames()[index]);
+    //    int index=node.getSymbol().getTokenIndex();
+  //      System.err.println(sysYLexer.getRuleNames()[index]);
         return super.visitTerminal(node);
     }
 }

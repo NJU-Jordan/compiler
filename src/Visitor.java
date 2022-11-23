@@ -62,7 +62,8 @@ public class Visitor extends  SysYParserBaseVisitor{
        cur_depth++;
 
        if(type!=-1&&rule_with_colors[type].length()!=0){
-           if(type==34){
+           if(type==SysYLexer.INTEGR_CONST){
+               //进制转换
                text=String.valueOf(toDEC(text));
            }
 

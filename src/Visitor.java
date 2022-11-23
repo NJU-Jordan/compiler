@@ -12,7 +12,7 @@ public class Visitor extends  SysYParserBaseVisitor{
     private Vocabulary vocabulary;
     private int cur_depth;  //记录当前访问树的深度
     private String[] rule_with_colors= new String[] {
-         "CONST[orange]", "INT[orange]", "VOID[orange]", "IF[orange]", "ELSE[orange]", "WHILE[orange]", "BREAK[orange]", "CONTINUE[orange]",
+         null,"CONST[orange]", "INT[orange]", "VOID[orange]", "IF[orange]", "ELSE[orange]", "WHILE[orange]", "BREAK[orange]", "CONTINUE[orange]",
                 "RETURN[orange]", "PLUS[blue]", "MINUS[blue]", "MUL[blue]", "DIV[blue]", "MOD[blue]", "ASSIGN[blue]", "EQ[blue]", "NEQ[blue]",
                 "LT[blue]", "GT[blue]", "LE[blue]", "GE[blue]", "NOT[blue]", "AND[blue]", "OR[blue]", "", "", "",
                 "", "", "", "", "", "IDENT[red]", "INTEGR_CONST[green]",

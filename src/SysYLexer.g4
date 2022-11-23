@@ -67,15 +67,31 @@ COMMA : ',';
 SEMICOLON : ';';
 
 
-IDENT :  ([a-zA-Z] | '_')([a-zA-Z] | [0-9] | '_')*;
+IDENT
+   : [_a-zA-Z] [_a-zA-Z0-9]*
+   ;
 
+INTEGR_CONST
+   : DECIMAL_CONST
+   | OCTAL_CONST
+   | HEXADECIMAL_CONST
+   ;
 
+fragment
+DECIMAL_CONST
+   : '0'
+   | [1-9] [0-9]*
+   ;
 
-INTEGR_CONST : DEC | OCT | HEX ;
+fragment
+OCTAL_CONST:
+   '0' [0-7]+
+   ;
 
-fragment DEC : '0' | ([1-9][0-9]*);
-fragment OCT : '0' ('0'| ([1-7][0-7]*));
-fragment HEX : ('0x'| '0X')('0' | [1-9a-fA-F] [0-9a-fA-F]*);
+fragment
+HEXADECIMAL_CONST
+   : ('0x' | '0X') [a-fA-F0-9]+
+   ;
 
 WS : [ \r\n\t]+ -> skip ;
 

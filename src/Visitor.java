@@ -8,12 +8,7 @@ public class Visitor extends  SysYParserBaseVisitor{
     private SysYLexer sysYLexer;
     private SysYParser sysYParser;
     private int cur_depth;  //记录当前访问树的深度
-    private static final Map<String,String> map=new HashMap<>(){
-        static {
-            map.put("int","INT");
 
-        }
-    };
     public Visitor(SysYLexer sysYLexer, SysYParser sysYParser){
         this.sysYLexer=sysYLexer;
         this.sysYParser=sysYParser;

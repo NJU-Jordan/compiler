@@ -36,7 +36,9 @@ public class Visitor extends  SysYParserBaseVisitor{
 
         int index=node.getRuleContext().getRuleIndex();
         cur_depth=node.getRuleContext().depth();
-        System.err.println(indent_of_depth(cur_depth)+sysYParser.getRuleNames()[index]);
+        String rulename=sysYParser.getRuleNames()[index];
+        String pro_rulename=rulename.substring(0,1).toUpperCase()+rulename.substring(1);
+        System.err.println(indent_of_depth(cur_depth)+pro_rulename);
         return super.visitChildren(node);
     }
 

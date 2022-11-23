@@ -35,13 +35,14 @@ public class Main
         CharStream input = CharStreams.fromFileName(source);
         //  CharStream input = CharStreams.fromFileName("src/input.txt");
         SysYLexer sysYLexer = new SysYLexer(input);
-        ErrorListener errorListener=new ErrorListener();
-        sysYLexer.removeErrorListeners();
-        sysYLexer.addErrorListener(errorListener);
+
 
 
         CommonTokenStream tokens = new CommonTokenStream(sysYLexer);
         SysYParser sysYParser = new SysYParser(tokens);
+        ErrorListener errorListener=new ErrorListener();
+        sysYParser.removeErrorListeners();
+        sysYParser.addErrorListener(errorListener);
         ParseTree tree = sysYParser.program();
         //Visitor extends SysYParserBaseVisitor<Void>
         Visitor visitor = new Visitor(sysYLexer,sysYParser);

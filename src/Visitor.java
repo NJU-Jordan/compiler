@@ -35,11 +35,12 @@ public class Visitor extends  SysYParserBaseVisitor{
 
     @Override
     public Object visitTerminal(TerminalNode node) {
-       // String[] lexerRuleNames=sysYLexer.getRuleNames();
-       int type=node.getSymbol().getType();
 
+       int type=node.getSymbol().getType();
+       cur_depth++;
         System.err.println(indent_of_depth(cur_depth)+vocabulary.getSymbolicName(type));
       //  System.err.println(index);
+        cur_depth--;
         return super.visitTerminal(node);
     }
 }

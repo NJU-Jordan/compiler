@@ -29,7 +29,7 @@ public class Visitor extends  SysYParserBaseVisitor{
     public Object visitTerminal(TerminalNode node) {
 
        int index=node.getSymbol().getTokenIndex();
-        System.err.println(index);
+        System.err.println(indent_of_depth(cur_depth)+index);
       //  System.err.println(index);
         return super.visitTerminal(node);
     }

@@ -18,7 +18,7 @@ constDecl : CONST bType constDef (COMMA constDef ) * SEMICOLON ;
 
 bType : INT ;
 
-constDef : IDENT ( L_BRACKT constExp R_BRACKT )* EQ constInitVal ;
+constDef : IDENT ( L_BRACKT constExp R_BRACKT )* ASSIGN constInitVal ;
 
 constInitVal : constExp
              | L_BRACE ( constInitVal (COMMA constInitVal )* )? R_BRACE
@@ -48,7 +48,7 @@ block : L_BRACE ( blockItem )*  R_BRACE ;
 blockItem : decl | stmt ;
 
 stmt
-    : lVal EQ exp SEMICOLON | (exp)? SEMICOLON | block
+    : lVal ASSIGN exp SEMICOLON | (exp)? SEMICOLON | block
     | IF L_PAREN cond R_PAREN stmt ( ELSE stmt )?
     | WHILE L_PAREN cond R_PAREN stmt
     | BREAK SEMICOLON | CONTINUE SEMICOLON

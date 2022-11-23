@@ -417,7 +417,7 @@ public class SysYParser extends Parser {
 
 	public static class ConstDefContext extends ParserRuleContext {
 		public TerminalNode IDENT() { return getToken(SysYParser.IDENT, 0); }
-		public TerminalNode EQ() { return getToken(SysYParser.EQ, 0); }
+		public TerminalNode ASSIGN() { return getToken(SysYParser.ASSIGN, 0); }
 		public ConstInitValContext constInitVal() {
 			return getRuleContext(ConstInitValContext.class,0);
 		}
@@ -482,7 +482,7 @@ public class SysYParser extends Parser {
 				_la = _input.LA(1);
 			}
 			setState(88);
-			match(EQ);
+			match(ASSIGN);
 			setState(89);
 			constInitVal();
 			}
@@ -1327,7 +1327,7 @@ public class SysYParser extends Parser {
 		public LValContext lVal() {
 			return getRuleContext(LValContext.class,0);
 		}
-		public TerminalNode EQ() { return getToken(SysYParser.EQ, 0); }
+		public TerminalNode ASSIGN() { return getToken(SysYParser.ASSIGN, 0); }
 		public ExpContext exp() {
 			return getRuleContext(ExpContext.class,0);
 		}
@@ -1385,7 +1385,7 @@ public class SysYParser extends Parser {
 				setState(203);
 				lVal();
 				setState(204);
-				match(EQ);
+				match(ASSIGN);
 				setState(205);
 				exp(0);
 				setState(206);
@@ -2248,7 +2248,7 @@ public class SysYParser extends Parser {
 		"\7\2EF\7!\2\2FH\5\f\7\2GE\3\2\2\2HK\3\2\2\2IG\3\2\2\2IJ\3\2\2\2JL\3\2"+
 		"\2\2KI\3\2\2\2LM\7\"\2\2M\t\3\2\2\2NO\7\4\2\2O\13\3\2\2\2PW\7#\2\2QR\7"+
 		"\37\2\2RS\5\62\32\2ST\7 \2\2TV\3\2\2\2UQ\3\2\2\2VY\3\2\2\2WU\3\2\2\2W"+
-		"X\3\2\2\2XZ\3\2\2\2YW\3\2\2\2Z[\7\22\2\2[\\\5\16\b\2\\\r\3\2\2\2]k\5\62"+
+		"X\3\2\2\2XZ\3\2\2\2YW\3\2\2\2Z[\7\21\2\2[\\\5\16\b\2\\\r\3\2\2\2]k\5\62"+
 		"\32\2^g\7\35\2\2_d\5\16\b\2`a\7!\2\2ac\5\16\b\2b`\3\2\2\2cf\3\2\2\2db"+
 		"\3\2\2\2de\3\2\2\2eh\3\2\2\2fd\3\2\2\2g_\3\2\2\2gh\3\2\2\2hi\3\2\2\2i"+
 		"k\7\36\2\2j]\3\2\2\2j^\3\2\2\2k\17\3\2\2\2lm\5\n\6\2mr\5\22\n\2no\7!\2"+
@@ -2280,7 +2280,7 @@ public class SysYParser extends Parser {
 		"\3\2\2\2\u00c5\u00c7\3\2\2\2\u00c6\u00c4\3\2\2\2\u00c7\u00c8\7\36\2\2"+
 		"\u00c8\37\3\2\2\2\u00c9\u00cc\5\6\4\2\u00ca\u00cc\5\"\22\2\u00cb\u00c9"+
 		"\3\2\2\2\u00cb\u00ca\3\2\2\2\u00cc!\3\2\2\2\u00cd\u00ce\5(\25\2\u00ce"+
-		"\u00cf\7\22\2\2\u00cf\u00d0\5$\23\2\u00d0\u00d1\7\"\2\2\u00d1\u00f0\3"+
+		"\u00cf\7\21\2\2\u00cf\u00d0\5$\23\2\u00d0\u00d1\7\"\2\2\u00d1\u00f0\3"+
 		"\2\2\2\u00d2\u00d4\5$\23\2\u00d3\u00d2\3\2\2\2\u00d3\u00d4\3\2\2\2\u00d4"+
 		"\u00d5\3\2\2\2\u00d5\u00f0\7\"\2\2\u00d6\u00f0\5\36\20\2\u00d7\u00d8\7"+
 		"\6\2\2\u00d8\u00d9\7\33\2\2\u00d9\u00da\5&\24\2\u00da\u00db\7\34\2\2\u00db"+

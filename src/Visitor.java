@@ -20,6 +20,6 @@ public class Visitor extends  SysYParserBaseVisitor{
 
        // int index=node.getSymbol().getTokenIndex();
        // System.err.println(sysYLexer.getRuleNames()[index]);
-       // return super.visitTerminal(node);
+        return super.visitTerminal(node);
     }
 }

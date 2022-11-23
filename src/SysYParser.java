@@ -20,8 +20,7 @@ public class SysYParser extends Parser {
 		PLUS=10, MINUS=11, MUL=12, DIV=13, MOD=14, ASSIGN=15, EQ=16, NEQ=17, LT=18, 
 		GT=19, LE=20, GE=21, NOT=22, AND=23, OR=24, L_PAREN=25, R_PAREN=26, L_BRACE=27, 
 		R_BRACE=28, L_BRACKT=29, R_BRACKT=30, COMMA=31, SEMICOLON=32, IDENT=33, 
-		INTEGR_CONST=34, WS=35, LINE_COMMENT=36, MULTILINE_COMMENT=37, InitVal=38, 
-		BType=39;
+		INTEGR_CONST=34, WS=35, LINE_COMMENT=36, MULTILINE_COMMENT=37;
 	public static final int
 		RULE_program = 0, RULE_compUnit = 1, RULE_decl = 2, RULE_constDecl = 3, 
 		RULE_bType = 4, RULE_constDef = 5, RULE_constInitVal = 6, RULE_varDecl = 7, 
@@ -54,7 +53,7 @@ public class SysYParser extends Parser {
 			"RETURN", "PLUS", "MINUS", "MUL", "DIV", "MOD", "ASSIGN", "EQ", "NEQ", 
 			"LT", "GT", "LE", "GE", "NOT", "AND", "OR", "L_PAREN", "R_PAREN", "L_BRACE", 
 			"R_BRACE", "L_BRACKT", "R_BRACKT", "COMMA", "SEMICOLON", "IDENT", "INTEGR_CONST", 
-			"WS", "LINE_COMMENT", "MULTILINE_COMMENT", "InitVal", "BType"
+			"WS", "LINE_COMMENT", "MULTILINE_COMMENT"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -800,16 +799,15 @@ public class SysYParser extends Parser {
 		}
 		public TerminalNode L_BRACE() { return getToken(SysYParser.L_BRACE, 0); }
 		public TerminalNode R_BRACE() { return getToken(SysYParser.R_BRACE, 0); }
-		public InitValContext initVal() {
-			return getRuleContext(InitValContext.class,0);
+		public List<InitValContext> initVal() {
+			return getRuleContexts(InitValContext.class);
+		}
+		public InitValContext initVal(int i) {
+			return getRuleContext(InitValContext.class,i);
 		}
 		public List<TerminalNode> COMMA() { return getTokens(SysYParser.COMMA); }
 		public TerminalNode COMMA(int i) {
 			return getToken(SysYParser.COMMA, i);
-		}
-		public List<TerminalNode> InitVal() { return getTokens(SysYParser.InitVal); }
-		public TerminalNode InitVal(int i) {
-			return getToken(SysYParser.InitVal, i);
 		}
 		public InitValContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -871,7 +869,7 @@ public class SysYParser extends Parser {
 						setState(144);
 						match(COMMA);
 						setState(145);
-						match(InitVal);
+						initVal();
 						}
 						}
 						setState(150);
@@ -948,7 +946,7 @@ public class SysYParser extends Parser {
 			setState(160);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if (_la==BType) {
+			if (_la==INT) {
 				{
 				setState(159);
 				funcFParams();
@@ -1093,7 +1091,9 @@ public class SysYParser extends Parser {
 	}
 
 	public static class FuncFParamContext extends ParserRuleContext {
-		public TerminalNode BType() { return getToken(SysYParser.BType, 0); }
+		public BTypeContext bType() {
+			return getRuleContext(BTypeContext.class,0);
+		}
 		public TerminalNode IDENT() { return getToken(SysYParser.IDENT, 0); }
 		public List<TerminalNode> L_BRACKT() { return getTokens(SysYParser.L_BRACKT); }
 		public TerminalNode L_BRACKT(int i) {
@@ -1136,7 +1136,7 @@ public class SysYParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(175);
-			match(BType);
+			bType();
 			setState(176);
 			match(IDENT);
 			setState(188);
@@ -2210,7 +2210,7 @@ public class SysYParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3)\u013d\4\2\t\2\4"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\'\u013d\4\2\t\2\4"+
 		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
 		"\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\4\31\t\31"+
@@ -2261,8 +2261,8 @@ public class SysYParser extends Parser {
 		"\3\2\2\2\u008a\u0088\3\2\2\2\u008b\u008c\7\22\2\2\u008c\u008e\5\24\13"+
 		"\2\u008dw\3\2\2\2\u008d\u0081\3\2\2\2\u008e\23\3\2\2\2\u008f\u009d\5$"+
 		"\23\2\u0090\u0099\7\35\2\2\u0091\u0096\5\24\13\2\u0092\u0093\7!\2\2\u0093"+
-		"\u0095\7(\2\2\u0094\u0092\3\2\2\2\u0095\u0098\3\2\2\2\u0096\u0094\3\2"+
-		"\2\2\u0096\u0097\3\2\2\2\u0097\u009a\3\2\2\2\u0098\u0096\3\2\2\2\u0099"+
+		"\u0095\5\24\13\2\u0094\u0092\3\2\2\2\u0095\u0098\3\2\2\2\u0096\u0094\3"+
+		"\2\2\2\u0096\u0097\3\2\2\2\u0097\u009a\3\2\2\2\u0098\u0096\3\2\2\2\u0099"+
 		"\u0091\3\2\2\2\u0099\u009a\3\2\2\2\u009a\u009b\3\2\2\2\u009b\u009d\7\36"+
 		"\2\2\u009c\u008f\3\2\2\2\u009c\u0090\3\2\2\2\u009d\25\3\2\2\2\u009e\u009f"+
 		"\5\30\r\2\u009f\u00a0\7#\2\2\u00a0\u00a2\7\33\2\2\u00a1\u00a3\5\32\16"+
@@ -2270,8 +2270,8 @@ public class SysYParser extends Parser {
 		"\7\34\2\2\u00a5\u00a6\5\36\20\2\u00a6\27\3\2\2\2\u00a7\u00a8\t\2\2\2\u00a8"+
 		"\31\3\2\2\2\u00a9\u00ae\5\34\17\2\u00aa\u00ab\7!\2\2\u00ab\u00ad\5\34"+
 		"\17\2\u00ac\u00aa\3\2\2\2\u00ad\u00b0\3\2\2\2\u00ae\u00ac\3\2\2\2\u00ae"+
-		"\u00af\3\2\2\2\u00af\33\3\2\2\2\u00b0\u00ae\3\2\2\2\u00b1\u00b2\7)\2\2"+
-		"\u00b2\u00be\7#\2\2\u00b3\u00b4\7\37\2\2\u00b4\u00bb\7 \2\2\u00b5\u00b6"+
+		"\u00af\3\2\2\2\u00af\33\3\2\2\2\u00b0\u00ae\3\2\2\2\u00b1\u00b2\5\n\6"+
+		"\2\u00b2\u00be\7#\2\2\u00b3\u00b4\7\37\2\2\u00b4\u00bb\7 \2\2\u00b5\u00b6"+
 		"\7\37\2\2\u00b6\u00b7\5$\23\2\u00b7\u00b8\7 \2\2\u00b8\u00ba\3\2\2\2\u00b9"+
 		"\u00b5\3\2\2\2\u00ba\u00bd\3\2\2\2\u00bb\u00b9\3\2\2\2\u00bb\u00bc\3\2"+
 		"\2\2\u00bc\u00bf\3\2\2\2\u00bd\u00bb\3\2\2\2\u00be\u00b3\3\2\2\2\u00be"+

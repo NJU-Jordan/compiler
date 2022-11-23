@@ -32,7 +32,7 @@ varDef  : IDENT ( L_BRACKT constExp R_BRACKT ) *
         ;
 
 
-initVal : exp | L_BRACE ( initVal ( COMMA InitVal ) * )?  R_BRACE ;
+initVal : exp | L_BRACE ( initVal ( COMMA initVal ) * )?  R_BRACE ;
 
 funcDef : funcType IDENT L_PAREN (funcFParams)? R_PAREN block ;
 
@@ -40,7 +40,7 @@ funcType : VOID | INT ;
 
 funcFParams : funcFParam (COMMA funcFParam )* ;
 
-funcFParam : BType IDENT (L_BRACKT  R_BRACKT (L_BRACKT  exp R_BRACKT )* )? ;
+funcFParam : bType IDENT (L_BRACKT  R_BRACKT (L_BRACKT  exp R_BRACKT )* )? ;
 
 
 block : L_BRACE ( blockItem )*  R_BRACE ;

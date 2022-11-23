@@ -60,6 +60,7 @@ public class Visitor extends  SysYParserBaseVisitor{
     @Override
     public Object visitTerminal(TerminalNode node) {
        String text=node.getText();
+
        int type=node.getSymbol().getType();
        cur_depth++;
 
@@ -69,11 +70,12 @@ public class Visitor extends  SysYParserBaseVisitor{
                text=String.valueOf(toDEC(text));
            }
 
-           System.err.println(indent_of_depth(cur_depth)+text+" "+rule_with_colors[type]);
+           System.err.println(node.getParent().getText()+indent_of_depth(cur_depth)+text+" "+rule_with_colors[type]);
        }
 
       //  System.err.println(index);
         cur_depth--;
         return super.visitTerminal(node);
     }
+
 }

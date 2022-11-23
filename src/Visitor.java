@@ -61,7 +61,7 @@ public class Visitor extends  SysYParserBaseVisitor{
     public Object visitTerminal(TerminalNode node) {
        String text=node.getText();
        int type=node.getSymbol().getType();
-     //  cur_depth++;
+       cur_depth++;
 
        if(type!=-1&&rule_with_colors[type].length()!=0){
            if(type==SysYLexer.INTEGR_CONST){
@@ -73,7 +73,7 @@ public class Visitor extends  SysYParserBaseVisitor{
        }
 
       //  System.err.println(index);
-      //  cur_depth--;
+        cur_depth--;
         return super.visitTerminal(node);
     }
 }

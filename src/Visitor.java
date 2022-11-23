@@ -1,10 +1,19 @@
 import org.antlr.v4.runtime.tree.RuleNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Visitor extends  SysYParserBaseVisitor{
     private SysYLexer sysYLexer;
     private SysYParser sysYParser;
     private int cur_depth;  //记录当前访问树的深度
+    private static final Map<String,String> map=new HashMap<>(){
+        static {
+            map.put("int","INT");
+
+        }
+    };
     public Visitor(SysYLexer sysYLexer, SysYParser sysYParser){
         this.sysYLexer=sysYLexer;
         this.sysYParser=sysYParser;
@@ -27,10 +36,10 @@ public class Visitor extends  SysYParserBaseVisitor{
 
     @Override
     public Object visitTerminal(TerminalNode node) {
+        String[] lexerRuleNames=sysYLexer.getRuleNames();
+       int type=node.getSymbol().getType();
 
-       int index=node.getSymbol().getTokenIndex();
-
-        System.err.println(indent_of_depth(cur_depth)+index+node.getText());
+        System.err.println(indent_of_depth(cur_depth)+lexerRuleNames[type]);
       //  System.err.println(index);
         return super.visitTerminal(node);
     }

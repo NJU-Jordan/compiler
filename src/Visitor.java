@@ -49,8 +49,8 @@ public class Visitor extends  SysYParserBaseVisitor{
         //访问每个节点的子节点前调用调用
 
         int index=node.getRuleContext().getRuleIndex();
-
-        int cur_depth=sysYParser.getContext().depth();
+       // System.err.println(sysYParser.getRuleContext());
+        int cur_depth=sysYParser.getRuleContext().depth();
         String rulename=sysYParser.getRuleNames()[index];
         String pro_rulename=rulename.substring(0,1).toUpperCase()+rulename.substring(1);
         System.err.println(indent_of_depth(cur_depth)+pro_rulename);
@@ -64,7 +64,7 @@ public class Visitor extends  SysYParserBaseVisitor{
 
        int type=node.getSymbol().getType();
 
-       int cur_depth=sysYParser.getContext().depth();
+       int cur_depth=sysYParser.getRuleContext().depth();
        if(type!=-1&&rule_with_colors[type].length()!=0){
            if(type==SysYLexer.INTEGR_CONST){
                //进制转换

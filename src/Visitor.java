@@ -35,10 +35,10 @@ public class Visitor extends  SysYParserBaseVisitor{
 
     @Override
     public Object visitTerminal(TerminalNode node) {
-
+       String text=node.getText();
        int type=node.getSymbol().getType();
        cur_depth++;
-        System.err.println(node.getSymbol().getText()+" "+indent_of_depth(cur_depth)+vocabulary.getSymbolicName(type));
+        System.err.println(indent_of_depth(cur_depth)+text+" "+vocabulary.getSymbolicName(type));
       //  System.err.println(index);
         cur_depth--;
         return super.visitTerminal(node);

@@ -3,7 +3,7 @@
   <component name="WebServers">
     <option name="servers">
       <webServer id="87094467-c0c6-4ced-ba4e-087d87fc39be" name="192.168.88.129" url="http://192.168.88.129">
-        <fileTransfer rootFolder="/mnt/hgfs/compiler/Lab" accessType="SFTP" sshConfigId="e44422c6-ce21-4698-a743-7e5120d1e85f" sshConfig="192.168.88.129">
+        <fileTransfer rootFolder="/mnt/hgfs/compiler/Lab" accessType="SFTP" host="localhost" port="22" sshConfigId="e44422c6-ce21-4698-a743-7e5120d1e85f" sshConfig="192.168.88.129">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
           </advancedOptions>

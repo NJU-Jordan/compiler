@@ -26,8 +26,7 @@ public class Main
         return  result;
     }
     public static void main(String[] args) throws IOException {
-        //       System.out.println(toDEC("0"));
- //命令行参数部分
+         //      System.out.println(toDEC("0"));
         if (args.length < 1) {
             System.err.println("input path is required");
         }

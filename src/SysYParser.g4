@@ -28,7 +28,7 @@ varDecl : bType varDef ( COMMA varDef ) * SEMICOLON
         ;
 
 varDef  : IDENT ( L_BRACKT constExp R_BRACKT ) *
-        | IDENT ( L_BRACKT  constExp R_BRACKT  )* EQ initVal
+        | IDENT ( L_BRACKT  constExp R_BRACKT  )* ASSIGN initVal
         ;
 
 

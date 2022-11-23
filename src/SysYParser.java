@@ -695,7 +695,7 @@ public class SysYParser extends Parser {
 		public TerminalNode R_BRACKT(int i) {
 			return getToken(SysYParser.R_BRACKT, i);
 		}
-		public TerminalNode EQ() { return getToken(SysYParser.EQ, 0); }
+		public TerminalNode ASSIGN() { return getToken(SysYParser.ASSIGN, 0); }
 		public InitValContext initVal() {
 			return getRuleContext(InitValContext.class,0);
 		}
@@ -775,7 +775,7 @@ public class SysYParser extends Parser {
 					_la = _input.LA(1);
 				}
 				setState(137);
-				match(EQ);
+				match(ASSIGN);
 				setState(138);
 				initVal();
 				}
@@ -2258,7 +2258,7 @@ public class SysYParser extends Parser {
 		"\2\2\u0080~\3\2\2\2\u0081\u0088\7#\2\2\u0082\u0083\7\37\2\2\u0083\u0084"+
 		"\5\62\32\2\u0084\u0085\7 \2\2\u0085\u0087\3\2\2\2\u0086\u0082\3\2\2\2"+
 		"\u0087\u008a\3\2\2\2\u0088\u0086\3\2\2\2\u0088\u0089\3\2\2\2\u0089\u008b"+
-		"\3\2\2\2\u008a\u0088\3\2\2\2\u008b\u008c\7\22\2\2\u008c\u008e\5\24\13"+
+		"\3\2\2\2\u008a\u0088\3\2\2\2\u008b\u008c\7\21\2\2\u008c\u008e\5\24\13"+
 		"\2\u008dw\3\2\2\2\u008d\u0081\3\2\2\2\u008e\23\3\2\2\2\u008f\u009d\5$"+
 		"\23\2\u0090\u0099\7\35\2\2\u0091\u0096\5\24\13\2\u0092\u0093\7!\2\2\u0093"+
 		"\u0095\5\24\13\2\u0094\u0092\3\2\2\2\u0095\u0098\3\2\2\2\u0096\u0094\3"+

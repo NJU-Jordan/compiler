@@ -16,7 +16,7 @@ public class Visitor extends  SysYParserBaseVisitor{
                 "RETURN[orange]", "PLUS[blue]", "MINUS[blue]", "MUL[blue]", "DIV[blue]", "MOD[blue]", "ASSIGN[blue]", "EQ[blue]", "NEQ[blue]",
                 "LT[blue]", "GT[blue]", "LE[blue]", "GE[blue]", "NOT[blue]", "AND[blue]", "OR[blue]", "", "", "",
                 "", "", "", "", "", "IDENT[red]", "INTEGR_CONST[green]",
-                "", "", ""
+                "","","","", "", ""
     };
 
     public Visitor(SysYLexer sysYLexer, SysYParser sysYParser){

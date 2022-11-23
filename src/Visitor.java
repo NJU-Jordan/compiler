@@ -4,6 +4,7 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 public class Visitor extends  SysYParserBaseVisitor{
     private SysYLexer sysYLexer;
     private SysYParser sysYParser;
+    private int cur_depth;  //记录当前访问树的深度
     public Visitor(SysYLexer sysYLexer, SysYParser sysYParser){
         this.sysYLexer=sysYLexer;
         this.sysYParser=sysYParser;
@@ -19,16 +20,17 @@ public class Visitor extends  SysYParserBaseVisitor{
     public Object visitChildren(RuleNode node) {
 
         int index=node.getRuleContext().getRuleIndex();
-        int depth=node.getRuleContext().depth();
-        System.err.println(indent_of_depth(depth)+sysYParser.getRuleNames()[index]);
+        cur_depth=node.getRuleContext().depth();
+        System.err.println(indent_of_depth(cur_depth)+sysYParser.getRuleNames()[index]);
         return super.visitChildren(node);
     }
 
     @Override
     public Object visitTerminal(TerminalNode node) {
 
-        int index=node.getSymbol().getTokenIndex();
-        System.err.println(sysYLexer.getRuleNames()[index]);
+    //    int index=node.getSymbol().getTokenIndex();
+
+      //  System.err.println(index);
         return super.visitTerminal(node);
     }
 }

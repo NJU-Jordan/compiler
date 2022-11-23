@@ -28,8 +28,8 @@ public class Visitor extends  SysYParserBaseVisitor{
     @Override
     public Object visitTerminal(TerminalNode node) {
 
-    //    int index=node.getSymbol().getTokenIndex();
-
+       int index=node.getSymbol().getTokenIndex();
+        System.err.println(index);
       //  System.err.println(index);
         return super.visitTerminal(node);
     }

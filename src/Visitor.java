@@ -46,13 +46,13 @@ public class Visitor extends  SysYParserBaseVisitor{
     }
     @Override
     public Object visitChildren(RuleNode node) {
-
+        //访问每个节点的子节点前调用调用
         int index=node.getRuleContext().getRuleIndex();
 
         cur_depth=node.getRuleContext().depth();
         String rulename=sysYParser.getRuleNames()[index];
         String pro_rulename=rulename.substring(0,1).toUpperCase()+rulename.substring(1);
-        System.err.println(indent_of_depth(cur_depth)+pro_rulename+" "+node.getChild(0).getText());
+        System.err.println(indent_of_depth(cur_depth)+pro_rulename);
 
         return super.visitChildren(node);
     }

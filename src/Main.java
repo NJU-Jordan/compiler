@@ -45,12 +45,12 @@ public class Main
         sysYParser.addErrorListener(errorListener);
         ParseTree tree = sysYParser.program();
         //Visitor extends SysYParserBaseVisitor<Void>
-        Visitor visitor = new Visitor(sysYLexer,sysYParser)
+        Visitor visitor = new Visitor(sysYLexer,sysYParser);
         if(errorListener.hasErr==1){
 
         }
         else{
-            ;
+
             visitor.visit(tree);
         }
 

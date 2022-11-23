@@ -11,6 +11,7 @@ public class Visitor extends  SysYParserBaseVisitor{
 
     private Vocabulary vocabulary;
     private RuleNode cur_node;  //记录当前访问的节点
+    private int cur_depth;
     private String[] rule_with_colors= new String[] {
          "","CONST[orange]", "INT[orange]", "VOID[orange]", "IF[orange]", "ELSE[orange]", "WHILE[orange]", "BREAK[orange]", "CONTINUE[orange]",
                 "RETURN[orange]", "PLUS[blue]", "MINUS[blue]", "MUL[blue]", "DIV[blue]", "MOD[blue]", "ASSIGN[blue]", "EQ[blue]", "NEQ[blue]",
@@ -50,7 +51,7 @@ public class Visitor extends  SysYParserBaseVisitor{
 
         int index=node.getRuleContext().getRuleIndex();
        // System.err.println(sysYParser.getRuleContext());
-        int cur_depth=sysYParser.getRuleContext().depth();
+        cur_depth=node.getRuleContext().depth();
         String rulename=sysYParser.getRuleNames()[index];
         String pro_rulename=rulename.substring(0,1).toUpperCase()+rulename.substring(1);
         System.err.println(indent_of_depth(cur_depth)+pro_rulename);
@@ -64,7 +65,7 @@ public class Visitor extends  SysYParserBaseVisitor{
 
        int type=node.getSymbol().getType();
 
-       int cur_depth=sysYParser.getRuleContext().depth();
+       cur_depth++;
        if(type!=-1&&rule_with_colors[type].length()!=0){
            if(type==SysYLexer.INTEGR_CONST){
                //进制转换
@@ -75,7 +76,7 @@ public class Visitor extends  SysYParserBaseVisitor{
        }
 
       //  System.err.println(index);
-
+        cur_depth--;
         return super.visitTerminal(node);
     }
 

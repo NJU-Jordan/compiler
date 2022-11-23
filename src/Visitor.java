@@ -1,3 +1,4 @@
+import org.antlr.v4.runtime.Vocabulary;
 import org.antlr.v4.runtime.tree.RuleNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
@@ -7,11 +8,14 @@ import java.util.Map;
 public class Visitor extends  SysYParserBaseVisitor{
     private SysYLexer sysYLexer;
     private SysYParser sysYParser;
+
+    private Vocabulary vocabulary;
     private int cur_depth;  //记录当前访问树的深度
 
     public Visitor(SysYLexer sysYLexer, SysYParser sysYParser){
         this.sysYLexer=sysYLexer;
         this.sysYParser=sysYParser;
+        this.vocabulary=sysYLexer.getVocabulary();
     }
     public static String indent_of_depth(int depth){
         String indent="";
@@ -31,10 +35,10 @@ public class Visitor extends  SysYParserBaseVisitor{
 
     @Override
     public Object visitTerminal(TerminalNode node) {
-        String[] lexerRuleNames=sysYLexer.getRuleNames();
+       // String[] lexerRuleNames=sysYLexer.getRuleNames();
        int type=node.getSymbol().getType();
 
-        System.err.println(indent_of_depth(cur_depth)+lexerRuleNames[type]);
+        System.err.println(indent_of_depth(cur_depth)+vocabulary.getSymbolicName(type));
       //  System.err.println(index);
         return super.visitTerminal(node);
     }

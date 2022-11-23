@@ -31,6 +31,19 @@ public class Visitor extends  SysYParserBaseVisitor{
         }
         return indent;
     }
+    public static Integer toDEC(String INTEGR_CONST){
+
+        Integer result;
+        if(INTEGR_CONST.startsWith("0x")){
+            result =Integer.parseInt(INTEGR_CONST.substring(2),16);
+        }else if(INTEGR_CONST.startsWith("0")&&INTEGR_CONST.length()>=2){
+            result = Integer.parseInt(INTEGR_CONST.substring(1),8);
+        }
+        else{
+            result=Integer.parseInt(INTEGR_CONST);
+        }
+        return  result;
+    }
     @Override
     public Object visitChildren(RuleNode node) {
 
@@ -49,6 +62,10 @@ public class Visitor extends  SysYParserBaseVisitor{
        cur_depth++;
 
        if(type!=-1&&rule_with_colors[type].length()!=0){
+           if(type==34){
+               text=String.valueOf(toDEC(text));
+           }
+
            System.err.println(indent_of_depth(cur_depth)+text+" "+rule_with_colors[type]);
        }
 

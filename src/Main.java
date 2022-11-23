@@ -27,7 +27,7 @@ public class Main
     }
     public static void main(String[] args) throws IOException {
         //       System.out.println(toDEC("0"));
-// 命令行参数部分
+ 命令行参数部分
         if (args.length < 1) {
             System.err.println("input path is required");
         }
@@ -35,6 +35,10 @@ public class Main
         CharStream input = CharStreams.fromFileName(source);
         //  CharStream input = CharStreams.fromFileName("src/input.txt");
         SysYLexer sysYLexer = new SysYLexer(input);
+        ErrorListener errorListener=new ErrorListener();
+        sysYLexer.removeErrorListeners();
+        sysYLexer.addErrorListener(errorListener);
+
 
         CommonTokenStream tokens = new CommonTokenStream(sysYLexer);
         SysYParser sysYParser = new SysYParser(tokens);

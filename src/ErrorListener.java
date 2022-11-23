@@ -10,6 +10,6 @@ public class ErrorListener extends BaseErrorListener {
 
     public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine, String msg, RecognitionException e) {
         hasErr=1;
-        System.err.println("Error type A at Line " + line + ": " + msg);
+        System.err.println("Error type B at Line " + line + ": " + msg);
     }
 }

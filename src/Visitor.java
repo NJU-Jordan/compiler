@@ -43,7 +43,7 @@ public class Visitor extends  SysYParserBaseVisitor{
     @Override
     public Object visitTerminal(TerminalNode node) {
        String text=node.getText();
-       int type=node.getSymbol().getType()-1;
+       int type=node.getSymbol().getType()+1;
        cur_depth++;
 
        if(rule_with_colors[type].length()!=0){

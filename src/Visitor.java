@@ -11,7 +11,7 @@ public class Visitor extends  SysYParserBaseVisitor{
     }
     public static String indent_of_depth(int depth){
         String indent="";
-        for(int i=0;i<depth;i++){
+        for(int i=0;i<depth-1;i++){
             indent+="  ";
         }
         return indent;

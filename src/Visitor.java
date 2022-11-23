@@ -46,7 +46,7 @@ public class Visitor extends  SysYParserBaseVisitor{
        int type=node.getSymbol().getType();
        cur_depth++;
 
-       if(type!=-1&&rule_with_colors[type].length()!=0){
+       if(type!=-1){
            System.err.println(indent_of_depth(cur_depth)+type+" "+rule_with_colors[type]);
        }
 

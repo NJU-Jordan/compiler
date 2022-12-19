@@ -1,6 +1,7 @@
 import org.antlr.runtime.tree.TreeWizard;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 
 import java.io.*;
@@ -47,6 +48,12 @@ public class Main
         sysYParser.removeErrorListeners();
         sysYParser.addErrorListener(errorListener);
         ParseTree tree = sysYParser.program();
+
+        ParseTreeWalker walker=new ParseTreeWalker();
+        SymbolTableListener symbolTableListener=new SymbolTableListener();
+        walker.walk(symbolTableListener,tree);
+
+
         //Visitor extends SysYParserBaseVisitor<Void>
         Visitor visitor = new Visitor(sysYLexer,sysYParser);
         if(errorListener.hasErr==1){

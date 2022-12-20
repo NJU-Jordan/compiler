@@ -90,6 +90,14 @@ public class SymbolTableListener extends SysYParserBaseListener{
     @Override
     public void exitLVal(SysYParser.LValContext ctx) {
         String varName=ctx.IDENT().getText();
-        currentScope.resolve(varName);
+       if( currentScope.resolve(varName)==null)
+           System.err.println("Error type 1 at Line "+ctx.start.getLine()+": Undefined variable: " + varName);
+    }
+
+    //检查是否使用没有声明和定义的函数
+    public void enterCall(SysYParser.CallContext ctx) {
+        String funcName=ctx.IDENT().getText();
+       if( currentScope.resolve(funcName)==null)
+           System.err.println("Error type 2 at Line "+ctx.start.getLine()+": Undefined function: " + funcName);
     }
 }

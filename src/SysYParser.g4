@@ -56,13 +56,13 @@ stmt
     ;
 
 exp
-   : L_PAREN exp R_PAREN
-   | lVal
-   | number
-   | IDENT L_PAREN funcRParams? R_PAREN
-   | unaryOp exp
-   | exp (MUL | DIV | MOD) exp
-   | exp (PLUS | MINUS) exp
+   : L_PAREN exp R_PAREN     #Parens
+   | lVal                    #ExpLVal
+   | number                  #ExpNumber
+   | IDENT L_PAREN funcRParams? R_PAREN   # Call
+   | unaryOp exp                  #Unary
+   | exp (MUL | DIV | MOD) exp    # MulDivMod
+   | exp (PLUS | MINUS) exp       # PlusMinus
    ;
 
 cond

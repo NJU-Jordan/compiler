@@ -112,11 +112,54 @@ public interface SysYParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStmt(SysYParser.StmtContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link SysYParser#exp}.
+	 * Visit a parse tree produced by the {@code ExpNumber}
+	 * labeled alternative in {@link SysYParser#exp}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitExp(SysYParser.ExpContext ctx);
+	T visitExpNumber(SysYParser.ExpNumberContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code PlusMinus}
+	 * labeled alternative in {@link SysYParser#exp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPlusMinus(SysYParser.PlusMinusContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Call}
+	 * labeled alternative in {@link SysYParser#exp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCall(SysYParser.CallContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code MulDivMod}
+	 * labeled alternative in {@link SysYParser#exp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMulDivMod(SysYParser.MulDivModContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ExpLVal}
+	 * labeled alternative in {@link SysYParser#exp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExpLVal(SysYParser.ExpLValContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Parens}
+	 * labeled alternative in {@link SysYParser#exp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParens(SysYParser.ParensContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Unary}
+	 * labeled alternative in {@link SysYParser#exp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitUnary(SysYParser.UnaryContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link SysYParser#cond}.
 	 * @param ctx the parse tree

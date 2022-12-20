@@ -6,5 +6,6 @@ public class GlobalScope extends BaseScope{
         define(new BasicTypeSymbol("double"));
         define(new BasicTypeSymbol("void"));
 
+
     }
 }

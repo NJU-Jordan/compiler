@@ -106,11 +106,61 @@ public interface SysYParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBlockItem(SysYParser.BlockItemContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link SysYParser#stmt}.
+	 * Visit a parse tree produced by the {@code AssignStmt}
+	 * labeled alternative in {@link SysYParser#stmt}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitStmt(SysYParser.StmtContext ctx);
+	T visitAssignStmt(SysYParser.AssignStmtContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ExpStmt}
+	 * labeled alternative in {@link SysYParser#stmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExpStmt(SysYParser.ExpStmtContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code BlockStmt}
+	 * labeled alternative in {@link SysYParser#stmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBlockStmt(SysYParser.BlockStmtContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code IfStmt}
+	 * labeled alternative in {@link SysYParser#stmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIfStmt(SysYParser.IfStmtContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code WhileStmt}
+	 * labeled alternative in {@link SysYParser#stmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitWhileStmt(SysYParser.WhileStmtContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code BreakStmt}
+	 * labeled alternative in {@link SysYParser#stmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBreakStmt(SysYParser.BreakStmtContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ContinueStmt}
+	 * labeled alternative in {@link SysYParser#stmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitContinueStmt(SysYParser.ContinueStmtContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ReturnStmt}
+	 * labeled alternative in {@link SysYParser#stmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitReturnStmt(SysYParser.ReturnStmtContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code ExpNumber}
 	 * labeled alternative in {@link SysYParser#exp}.

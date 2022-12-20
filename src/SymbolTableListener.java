@@ -94,7 +94,7 @@ public class SymbolTableListener extends SysYParserBaseListener{
            System.err.println("Error type 1 at Line "+ctx.start.getLine()+": Undefined variable: " + varName);
     }
 
-    //检查是否使用没有声明和定义的函数
+    //函数调用时检查是否使用没有声明和定义的函数
     public void enterCall(SysYParser.CallContext ctx) {
         String funcName=ctx.IDENT().getText();
        if( currentScope.resolve(funcName)==null)

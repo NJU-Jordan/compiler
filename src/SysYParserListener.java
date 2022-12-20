@@ -167,15 +167,101 @@ public interface SysYParserListener extends ParseTreeListener {
 	 */
 	void exitBlockItem(SysYParser.BlockItemContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link SysYParser#stmt}.
+	 * Enter a parse tree produced by the {@code AssignStmt}
+	 * labeled alternative in {@link SysYParser#stmt}.
 	 * @param ctx the parse tree
 	 */
-	void enterStmt(SysYParser.StmtContext ctx);
+	void enterAssignStmt(SysYParser.AssignStmtContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link SysYParser#stmt}.
+	 * Exit a parse tree produced by the {@code AssignStmt}
+	 * labeled alternative in {@link SysYParser#stmt}.
 	 * @param ctx the parse tree
 	 */
-	void exitStmt(SysYParser.StmtContext ctx);
+	void exitAssignStmt(SysYParser.AssignStmtContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ExpStmt}
+	 * labeled alternative in {@link SysYParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterExpStmt(SysYParser.ExpStmtContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ExpStmt}
+	 * labeled alternative in {@link SysYParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitExpStmt(SysYParser.ExpStmtContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code BlockStmt}
+	 * labeled alternative in {@link SysYParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterBlockStmt(SysYParser.BlockStmtContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code BlockStmt}
+	 * labeled alternative in {@link SysYParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitBlockStmt(SysYParser.BlockStmtContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code IfStmt}
+	 * labeled alternative in {@link SysYParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterIfStmt(SysYParser.IfStmtContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code IfStmt}
+	 * labeled alternative in {@link SysYParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitIfStmt(SysYParser.IfStmtContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code WhileStmt}
+	 * labeled alternative in {@link SysYParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterWhileStmt(SysYParser.WhileStmtContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code WhileStmt}
+	 * labeled alternative in {@link SysYParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitWhileStmt(SysYParser.WhileStmtContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code BreakStmt}
+	 * labeled alternative in {@link SysYParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterBreakStmt(SysYParser.BreakStmtContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code BreakStmt}
+	 * labeled alternative in {@link SysYParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitBreakStmt(SysYParser.BreakStmtContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ContinueStmt}
+	 * labeled alternative in {@link SysYParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterContinueStmt(SysYParser.ContinueStmtContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ContinueStmt}
+	 * labeled alternative in {@link SysYParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitContinueStmt(SysYParser.ContinueStmtContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ReturnStmt}
+	 * labeled alternative in {@link SysYParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterReturnStmt(SysYParser.ReturnStmtContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ReturnStmt}
+	 * labeled alternative in {@link SysYParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitReturnStmt(SysYParser.ReturnStmtContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code ExpNumber}
 	 * labeled alternative in {@link SysYParser#exp}.

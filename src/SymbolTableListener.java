@@ -135,7 +135,7 @@ public class SymbolTableListener extends SysYParserBaseListener{
             if(var_type instanceof ArrayType){
                 ArrayType arrayType=(ArrayType) var_type;
                 int dimen=arrayType.dimen-ctx.exp().size();
-                Type basictype= currentScope.resolve(varName).getType();
+                Type basictype= arrayType.basicType;
                  //加中括号后表达式的类型
                 if(dimen> 0) {
                     target_type=new ArrayType(dimen,basictype);
@@ -162,11 +162,23 @@ public class SymbolTableListener extends SysYParserBaseListener{
     }
 
 
+    @Override public void exitExpLVal(SysYParser.ExpLValContext ctx) {
 
+        arrayTypeProperty.put(ctx, arrayTypeProperty.get(ctx.lVal()));
+    }
         //处理等号右边的整数
     public void exitExpNumber(SysYParser.ExpNumberContext ctx) {
         arrayTypeProperty.put(ctx, new BasicTypeSymbol("int"));
 
+    }
+
+    @Override
+    public void exitMulDivMod(SysYParser.MulDivModContext ctx) {
+       Type lhs=ctx.;
+    }
+
+    public void enterAssignStmt(SysYParser.AssignStmtContext ctx) {
+        System.out.println("enter assignstmt!");;
     }
     //检查stmt中赋值号两侧类型是否匹配
     //lVal ASSIGN exp SEMICOLON  # AssignStmt
@@ -178,9 +190,15 @@ public class SymbolTableListener extends SysYParserBaseListener{
             if(((ArrayType)lhs).dimen==((ArrayType)rhs).dimen) ismatch=true;
 
         }
-        else if( lhs instanceof BasicTypeSymbol && rhs instanceof  BasicTypeSymbol){
-            ismatch=true;
+        else if( lhs instanceof BasicTypeSymbol && rhs instanceof  ArrayType){
+            if(((ArrayType)rhs).dimen==0) ismatch=true;
 
+        }
+        else if (lhs instanceof ArrayType && rhs instanceof  BasicTypeSymbol){
+            if(((ArrayType)lhs).dimen==0) ismatch=true;
+        }
+        else if(lhs instanceof BasicTypeSymbol && rhs instanceof  BasicTypeSymbol){
+            ismatch=true;
         }
         if(!ismatch)  System.err.println("Error type 5 at Line "+ctx.start.getLine()+": Type mismatched for assignment.");
 

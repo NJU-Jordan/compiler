@@ -1687,6 +1687,8 @@ public class SysYParser extends Parser {
 		}
 	}
 	public static class PlusMinusContext extends ExpContext {
+		public ExpContext lhs;
+		public ExpContext rhs;
 		public List<ExpContext> exp() {
 			return getRuleContexts(ExpContext.class);
 		}
@@ -1733,6 +1735,8 @@ public class SysYParser extends Parser {
 		}
 	}
 	public static class MulDivModContext extends ExpContext {
+		public ExpContext lhs;
+		public ExpContext rhs;
 		public List<ExpContext> exp() {
 			return getRuleContexts(ExpContext.class);
 		}
@@ -1921,6 +1925,7 @@ public class SysYParser extends Parser {
 					case 1:
 						{
 						_localctx = new MulDivModContext(new ExpContext(_parentctx, _parentState));
+						((MulDivModContext)_localctx).lhs = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_exp);
 						setState(257);
 						if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
@@ -1935,12 +1940,13 @@ public class SysYParser extends Parser {
 							consume();
 						}
 						setState(259);
-						exp(3);
+						((MulDivModContext)_localctx).rhs = exp(3);
 						}
 						break;
 					case 2:
 						{
 						_localctx = new PlusMinusContext(new ExpContext(_parentctx, _parentState));
+						((PlusMinusContext)_localctx).lhs = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_exp);
 						setState(260);
 						if (!(precpred(_ctx, 1))) throw new FailedPredicateException(this, "precpred(_ctx, 1)");
@@ -1955,7 +1961,7 @@ public class SysYParser extends Parser {
 							consume();
 						}
 						setState(262);
-						exp(2);
+						((PlusMinusContext)_localctx).rhs = exp(2);
 						}
 						break;
 					}

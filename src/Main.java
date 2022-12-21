@@ -55,16 +55,16 @@ public class Main
 
 
         //Visitor extends SysYParserBaseVisitor<Void>
-        Visitor visitor = new Visitor(sysYLexer,sysYParser);
-        if(errorListener.hasErr==1){
-
-        }
-        else{
-
-            visitor.visit(tree);
-        }
-
-    }
+//        Visitor visitor = new Visitor(sysYLexer,sysYParser);
+//        if(errorListener.hasErr==1){
+//
+//        }
+//        else{
+//
+//            visitor.visit(tree);
+//        }
+//
+   }
 
 
 }

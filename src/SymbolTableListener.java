@@ -129,16 +129,25 @@ public class SymbolTableListener extends SysYParserBaseListener{
             System.err.println("Error type 1 at Line "+ctx.start.getLine()+": Undefined variable: " + varName);
 
         else{
-            int dimen=ctx.exp().size();
-            Type basictype= currentScope.resolve(varName).getType();
-            Type type;
-            if(dimen> 0) {
-                type=new ArrayType(dimen,basictype);
-                //   System.err.println(dimen);
-            }
-            else type=basictype;
 
-            arrayTypeProperty.put(ctx,currentScope.getSymbols().get(ctx.IDENT().getText()).getType());
+            Type var_type=currentScope.resolve(varName).getType();  //原始变量的类型
+            Type target_type;
+            if(var_type instanceof ArrayType){
+                ArrayType arrayType=(ArrayType) var_type;
+                int dimen=arrayType.dimen-ctx.exp().size();
+                Type basictype= currentScope.resolve(varName).getType();
+                 //加中括号后表达式的类型
+                if(dimen> 0) {
+                    target_type=new ArrayType(dimen,basictype);
+                    //   System.err.println(dimen);
+                }
+                else target_type=basictype;
+
+
+
+            }
+            else target_type=var_type;
+            arrayTypeProperty.put(ctx,target_type);
 
         }
 
@@ -162,7 +171,18 @@ public class SymbolTableListener extends SysYParserBaseListener{
     //检查stmt中赋值号两侧类型是否匹配
     //lVal ASSIGN exp SEMICOLON  # AssignStmt
     public void exitAssignStmt(SysYParser.AssignStmtContext ctx) {
+        Type lhs=arrayTypeProperty.get(ctx.lhs);
+        Type rhs=arrayTypeProperty.get(ctx.rhs);
+        boolean ismatch=false;
+        if(lhs instanceof ArrayType && rhs instanceof ArrayType){
+            if(((ArrayType)lhs).dimen==((ArrayType)rhs).dimen) ismatch=true;
 
+        }
+        else if( lhs instanceof BasicTypeSymbol && rhs instanceof  BasicTypeSymbol){
+            ismatch=true;
+
+        }
+        if(!ismatch)  System.err.println("Error type 5 at Line "+ctx.start.getLine()+": Type mismatched for assignment.");
 
     }
     public void exitReturnStmt(SysYParser.ReturnStmtContext ctx) {

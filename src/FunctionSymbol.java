@@ -7,9 +7,9 @@ public class FunctionSymbol extends BaseScope implements Symbol{
 
 
     }
-//
-//    @Override
-//    public Type getType() {
-//        return null;
-//    }
+
+    @Override
+    public Type getType() {
+        return null;
+    }
 }

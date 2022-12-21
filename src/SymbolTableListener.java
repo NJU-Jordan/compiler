@@ -86,7 +86,7 @@ public class SymbolTableListener extends SysYParserBaseListener{
         String varName=ctx.IDENT().getText();
         VariableSymbol var=new VariableSymbol(varName,type);
         if(currentScope.getSymbols().get(varName)!=null) System.err.println("Error type 3 at Line "+ctx.start.getLine()+": Redefined variable: " + varName);
-        currentScope.define(var);
+        else currentScope.define(var);
 
     }
     public void exitFuncFParams(SysYParser.FuncFParamsContext ctx) {

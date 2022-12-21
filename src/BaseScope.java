@@ -30,20 +30,20 @@ public class BaseScope implements Scope {
     public void define(Symbol symbol){
 
         symbols.put(symbol.getName(),symbol);
-      //  System.out.println("+" + symbol.getName());
+        System.out.println("+" + symbol.getName());
     }
     //解析符号
     public Symbol resolve(String name){
         Symbol symbol =symbols.get(name);
         if(symbol!=null) {
-            //System.out.println("*" + name);
+            System.out.println("*" + name);
             return symbol;
         }
         if(enclosingScope!=null) {
             //如果父作用域不为空，在父作用域下解析符号
             return enclosingScope.resolve(name);
         }
-     //   System.err.println("Cannot find" +name);
+        System.err.println("Cannot find" +name);
         return null;
 
     }

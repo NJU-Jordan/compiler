@@ -178,7 +178,7 @@ public class SymbolTableListener extends SysYParserBaseListener{
     }
 
     public void enterAssignStmt(SysYParser.AssignStmtContext ctx) {
-        System.out.println("enter assignstmt!");;
+     //   System.out.println("enter assignstmt!");;
     }
     //检查stmt中赋值号两侧类型是否匹配
     //lVal ASSIGN exp SEMICOLON  # AssignStmt

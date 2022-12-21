@@ -1427,14 +1427,16 @@ public class SysYParser extends Parser {
 		}
 	}
 	public static class AssignStmtContext extends StmtContext {
+		public LValContext lhs;
+		public ExpContext rhs;
+		public TerminalNode ASSIGN() { return getToken(SysYParser.ASSIGN, 0); }
+		public TerminalNode SEMICOLON() { return getToken(SysYParser.SEMICOLON, 0); }
 		public LValContext lVal() {
 			return getRuleContext(LValContext.class,0);
 		}
-		public TerminalNode ASSIGN() { return getToken(SysYParser.ASSIGN, 0); }
 		public ExpContext exp() {
 			return getRuleContext(ExpContext.class,0);
 		}
-		public TerminalNode SEMICOLON() { return getToken(SysYParser.SEMICOLON, 0); }
 		public AssignStmtContext(StmtContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -1522,11 +1524,11 @@ public class SysYParser extends Parser {
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(203);
-				lVal();
+				((AssignStmtContext)_localctx).lhs = lVal();
 				setState(204);
 				match(ASSIGN);
 				setState(205);
-				exp(0);
+				((AssignStmtContext)_localctx).rhs = exp(0);
 				setState(206);
 				match(SEMICOLON);
 				}

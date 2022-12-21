@@ -1,9 +1,13 @@
+import org.antlr.v4.runtime.tree.ParseTreeProperty;
+
 import java.util.ArrayList;
 
 public class SymbolTableListener extends SysYParserBaseListener{
     private GlobalScope globalScope = null;
     private Scope currentScope = null;
     int localScopeCounter= 0;
+
+    private final ParseTreeProperty<Type> arrayTypeProperty=new ParseTreeProperty<>();
 
   //  boolean detectErr=false;
     //开启新的Scope
@@ -22,7 +26,7 @@ public class SymbolTableListener extends SysYParserBaseListener{
         String funName=ctx.IDENT().getText();
 
 
-        FunctionSymbol fun=new FunctionSymbol(funName,null,currentScope);
+        FunctionSymbol fun=new FunctionSymbol(funName,currentScope);
 
         //函数本身还是符号;需要在全局作用域定义
         if(currentScope.getSymbols().get(funName)!=null) System.err.println("Error type 4 at Line "+ctx.start.getLine()+": Redefined function: " + funName);
@@ -62,6 +66,9 @@ public class SymbolTableListener extends SysYParserBaseListener{
     //什么时候定义Symbol
 
     //普通情况下定义变量
+    //varDef  : IDENT ( L_BRACKT constExp R_BRACKT ) *
+    //        | IDENT ( L_BRACKT  constExp R_BRACKT  )* ASSIGN initVal
+    //        ;
     public void exitVarDef(SysYParser.VarDefContext ctx) {
         SysYParser.VarDeclContext parent_ctx =parent_ctx= (SysYParser.VarDeclContext) ctx.parent;
         String typeName= parent_ctx.bType().getText();
@@ -116,8 +123,26 @@ public class SymbolTableListener extends SysYParserBaseListener{
     @Override
     public void exitLVal(SysYParser.LValContext ctx) {
         String varName=ctx.IDENT().getText();
-       if( currentScope.resolve(varName)==null)
-           System.err.println("Error type 1 at Line "+ctx.start.getLine()+": Undefined variable: " + varName);
+        //在lval节点上附上其类型信息，处理ID
+        if( currentScope.resolve(varName)==null)
+        //如果是未定义的变量，报错
+            System.err.println("Error type 1 at Line "+ctx.start.getLine()+": Undefined variable: " + varName);
+
+        else{
+            int dimen=ctx.exp().size();
+            Type basictype= currentScope.resolve(varName).getType();
+            Type type;
+            if(dimen> 0) {
+                type=new ArrayType(dimen,basictype);
+                //   System.err.println(dimen);
+            }
+            else type=basictype;
+
+            arrayTypeProperty.put(ctx,currentScope.getSymbols().get(ctx.IDENT().getText()).getType());
+
+        }
+
+
     }
 
     //函数调用时检查是否使用没有声明和定义的函数
@@ -127,10 +152,17 @@ public class SymbolTableListener extends SysYParserBaseListener{
            System.err.println("Error type 2 at Line "+ctx.start.getLine()+": Undefined function: " + funcName);
     }
 
+
+
+        //处理等号右边的整数
+    public void exitExpNumber(SysYParser.ExpNumberContext ctx) {
+        arrayTypeProperty.put(ctx, new BasicTypeSymbol("int"));
+
+    }
     //检查stmt中赋值号两侧类型是否匹配
+    //lVal ASSIGN exp SEMICOLON  # AssignStmt
     public void exitAssignStmt(SysYParser.AssignStmtContext ctx) {
-       String lValName= ctx.lVal().IDENT().getText();
-       Type type=(Type) globalScope.resolve(lValName);
+
 
     }
     public void exitReturnStmt(SysYParser.ReturnStmtContext ctx) {

@@ -48,7 +48,7 @@ block : L_BRACE ( blockItem )*  R_BRACE ;
 blockItem : decl | stmt ;
 
 stmt
-    : lVal ASSIGN exp SEMICOLON  # AssignStmt
+    : lhs=lVal ASSIGN rhs=exp SEMICOLON  # AssignStmt
     | (exp)? SEMICOLON      # ExpStmt
     | block                 # BlockStmt
     | IF L_PAREN cond R_PAREN stmt ( ELSE stmt )?  #IfStmt

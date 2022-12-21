@@ -174,7 +174,7 @@ public class SymbolTableListener extends SysYParserBaseListener{
 
     @Override
     public void exitMulDivMod(SysYParser.MulDivModContext ctx) {
-       Type lhs=ctx.;
+       //Type lhs=ctx.;
     }
 
     public void enterAssignStmt(SysYParser.AssignStmtContext ctx) {

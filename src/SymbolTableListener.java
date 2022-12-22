@@ -93,7 +93,7 @@ public class SymbolTableListener extends SysYParserBaseListener{
 
     }
 
-    @Override
+  //  @Override
     public void exitFuncType(SysYParser.FuncTypeContext ctx) {
        // ctx.
     }

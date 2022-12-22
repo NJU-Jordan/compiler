@@ -36,7 +36,9 @@ initVal : exp | L_BRACE ( initVal ( COMMA initVal ) * )?  R_BRACE ;
 
 funcDef : funcType IDENT L_PAREN (funcFParams)? R_PAREN block ;
 
-funcType : VOID | INT ;
+funcType :
+          VOID   # funcTypeVoid
+          | INT  # funcTypeInt;
 
 funcFParams : funcFParam (COMMA funcFParam )* ;
 

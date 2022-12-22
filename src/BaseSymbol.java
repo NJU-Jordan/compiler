@@ -1,11 +1,14 @@
 public class BaseSymbol implements Symbol {
-    final String name;
-    final Type type;
+     String name;
+     Type type;
 
 
 
     public Type getType() {
         return type;
+    }
+    public void setType(Type type){
+        this.type=type;
     }
 
     public BaseSymbol(String name, Type type) {

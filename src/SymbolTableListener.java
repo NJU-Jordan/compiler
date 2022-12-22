@@ -7,7 +7,7 @@ public class SymbolTableListener extends SysYParserBaseListener{
     private Scope currentScope = null;
     int localScopeCounter= 0;
 
-    private final ParseTreeProperty<Type> arrayTypeProperty=new ParseTreeProperty<>();
+    private final ParseTreeProperty<Type> typeProperty=new ParseTreeProperty<>();
 
   //  boolean detectErr=false;
     //开启新的Scope
@@ -25,8 +25,8 @@ public class SymbolTableListener extends SysYParserBaseListener{
         globalScope.resolve(typeName);
         String funName=ctx.IDENT().getText();
 
-
-        FunctionSymbol fun=new FunctionSymbol(funName,currentScope);
+        //暂时不放入functionType
+        FunctionSymbol fun=new FunctionSymbol(funName,null,currentScope);
 
         //函数本身还是符号;需要在全局作用域定义
         if(currentScope.getSymbols().get(funName)!=null) System.err.println("Error type 4 at Line "+ctx.start.getLine()+": Redefined function: " + funName);
@@ -85,18 +85,34 @@ public class SymbolTableListener extends SysYParserBaseListener{
 
         String varName=ctx.IDENT().getText();
         VariableSymbol var=new VariableSymbol(varName,type);
-        if(currentScope.getSymbols().get(varName)!=null) System.err.println("Error type 3 at Line "+ctx.start.getLine()+": Redefined variable: " + varName);
+        if(currentScope.getSymbols().get(varName)!=null)
+        {   typeProperty.put(ctx,new NoneType());
+            System.err.println("Error type 3 at Line "+ctx.start.getLine()+": Redefined variable: " + varName);
+        }
         else currentScope.define(var);
 
     }
+
+    @Override
+    public void exitFuncType(SysYParser.FuncTypeContext ctx) {
+       // ctx.
+    }
+
+    //funcDef : funcType IDENT L_PAREN (funcFParams)? R_PAREN block ;
     public void exitFuncFParams(SysYParser.FuncFParamsContext ctx) {
-//        SysYParser.FuncDefContext parent_ctx=(SysYParser.FuncDefContext)ctx.parent;
-//        String retTyName=parent_ctx.IDENT().getText();
-//        Type retTy= (Type) globalScope.resolve(typeName);
-//        ArrayList<Type> paramsType=new ArrayList<>();
-//       for(SysYParser.FuncFParamContext funcFParamContext:ctx.funcFParam()){
-//            paramsType.add((Type) )
-//        };
+        SysYParser.FuncDefContext parent_ctx=(SysYParser.FuncDefContext)ctx.parent;
+        String funcName=parent_ctx.IDENT().getText();
+        Type retTy= (Type) currentScope.resolve(funcName);
+        ArrayList<Type> paramsType=new ArrayList<>();
+       for(SysYParser.FuncFParamContext funcFParamContext:ctx.funcFParam()){
+            Type paramType=typeProperty.get(funcFParamContext);
+           if(!(paramType instanceof NoneType)){
+              paramsType.add(paramType);
+          }
+       }
+
+       FunctionType functionType=new FunctionType(retTy,paramsType);
+       currentScope.getSymbols().get(funcName).setType(functionType);
     }
 
     //定义函数形参中的变量
@@ -104,12 +120,29 @@ public class SymbolTableListener extends SysYParserBaseListener{
     // int [][exp];
     public void exitFuncFParam(SysYParser.FuncFParamContext ctx) {
 
-        String typeName=ctx.bType().getText();
-        Type type=(Type) globalScope.resolve(typeName);  //预先在全局作用域中定义了int，double,void三种类型
+        String typeName= ctx.bType().getText();
+
+
+        int dimen=ctx.exp().size();
+        Type basictype=(Type) currentScope.resolve(typeName);
+        Type type;
+        if(dimen> 0) {
+            type=new ArrayType(dimen,basictype);
+            //   System.err.println(dimen);
+        }
+        else type=basictype;
 
         String varName=ctx.IDENT().getText();
         VariableSymbol var=new VariableSymbol(varName,type);
+
+
+
+
         //if(currentScope.getSymbols().get(varName)!=null)
+        if(currentScope.getSymbols().get(varName)!=null)
+        {   typeProperty.put(ctx,new NoneType());
+            System.err.println("Error type 3 at Line "+ctx.start.getLine()+": Redefined variable: " + varName);
+        }
         currentScope.define(var);
 
 
@@ -147,7 +180,7 @@ public class SymbolTableListener extends SysYParserBaseListener{
 
             }
             else target_type=var_type;
-            arrayTypeProperty.put(ctx,target_type);
+            typeProperty.put(ctx,target_type);
 
         }
 
@@ -164,17 +197,23 @@ public class SymbolTableListener extends SysYParserBaseListener{
 
     @Override public void exitExpLVal(SysYParser.ExpLValContext ctx) {
 
-        arrayTypeProperty.put(ctx, arrayTypeProperty.get(ctx.lVal()));
+        typeProperty.put(ctx, typeProperty.get(ctx.lVal()));
     }
         //处理等号右边的整数
     public void exitExpNumber(SysYParser.ExpNumberContext ctx) {
-        arrayTypeProperty.put(ctx, new BasicTypeSymbol("int"));
+        typeProperty.put(ctx, new BasicTypeSymbol("int"));
 
     }
 
     @Override
     public void exitMulDivMod(SysYParser.MulDivModContext ctx) {
-       //Type lhs=ctx.;
+       Type lhs=typeProperty.get(ctx.lhs);
+       Type rhs=typeProperty.get(ctx.lhs);
+
+    }
+
+    public void enterPlusMinus(SysYParser.PlusMinusContext ctx){
+
     }
 
     public void enterAssignStmt(SysYParser.AssignStmtContext ctx) {
@@ -183,8 +222,8 @@ public class SymbolTableListener extends SysYParserBaseListener{
     //检查stmt中赋值号两侧类型是否匹配
     //lVal ASSIGN exp SEMICOLON  # AssignStmt
     public void exitAssignStmt(SysYParser.AssignStmtContext ctx) {
-        Type lhs=arrayTypeProperty.get(ctx.lhs);
-        Type rhs=arrayTypeProperty.get(ctx.rhs);
+        Type lhs=typeProperty.get(ctx.lhs);
+        Type rhs=typeProperty.get(ctx.rhs);
         boolean ismatch=false;
         if(lhs instanceof ArrayType && rhs instanceof ArrayType){
             if(((ArrayType)lhs).dimen==((ArrayType)rhs).dimen) ismatch=true;
@@ -204,6 +243,9 @@ public class SymbolTableListener extends SysYParserBaseListener{
 
     }
     public void exitReturnStmt(SysYParser.ReturnStmtContext ctx) {
-     //   String returnName=ctx.exp().getText();
+     //  String returnName=ctx.exp().getText();
     }
+
+
+
 }

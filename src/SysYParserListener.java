@@ -117,29 +117,15 @@ public interface SysYParserListener extends ParseTreeListener {
 	 */
 	void exitFuncDef(SysYParser.FuncDefContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code funcTypeVoid}
-	 * labeled alternative in {@link SysYParser#funcType}.
+	 * Enter a parse tree produced by {@link SysYParser#funcType}.
 	 * @param ctx the parse tree
 	 */
-	void enterFuncTypeVoid(SysYParser.FuncTypeVoidContext ctx);
+	void enterFuncType(SysYParser.FuncTypeContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code funcTypeVoid}
-	 * labeled alternative in {@link SysYParser#funcType}.
+	 * Exit a parse tree produced by {@link SysYParser#funcType}.
 	 * @param ctx the parse tree
 	 */
-	void exitFuncTypeVoid(SysYParser.FuncTypeVoidContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code funcTypeInt}
-	 * labeled alternative in {@link SysYParser#funcType}.
-	 * @param ctx the parse tree
-	 */
-	void enterFuncTypeInt(SysYParser.FuncTypeIntContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code funcTypeInt}
-	 * labeled alternative in {@link SysYParser#funcType}.
-	 * @param ctx the parse tree
-	 */
-	void exitFuncTypeInt(SysYParser.FuncTypeIntContext ctx);
+	void exitFuncType(SysYParser.FuncTypeContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link SysYParser#funcFParams}.
 	 * @param ctx the parse tree

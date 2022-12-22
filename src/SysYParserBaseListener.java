@@ -147,25 +147,13 @@ public class SysYParserBaseListener implements SysYParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFuncTypeVoid(SysYParser.FuncTypeVoidContext ctx) { }
+	@Override public void enterFuncType(SysYParser.FuncTypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitFuncTypeVoid(SysYParser.FuncTypeVoidContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterFuncTypeInt(SysYParser.FuncTypeIntContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitFuncTypeInt(SysYParser.FuncTypeIntContext ctx) { }
+	@Override public void exitFuncType(SysYParser.FuncTypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

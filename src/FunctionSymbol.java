@@ -10,7 +10,7 @@ public class FunctionSymbol extends BaseScope implements Symbol{
 
     @Override
     public Type getType() {
-        return null;
+        return functionType;
     }
 
     public void setType(Type type){

@@ -1,4 +1,5 @@
 import org.antlr.v4.runtime.tree.ParseTreeProperty;
+import org.stringtemplate.v4.NoIndentWriter;
 
 import java.util.ArrayList;
 
@@ -22,16 +23,19 @@ public class SymbolTableListener extends SysYParserBaseListener{
     public void enterFuncDef(SysYParser.FuncDefContext ctx){
         String typeName=ctx.funcType().getText();
 
-        globalScope.resolve(typeName);
+        Type retTy=(Type) globalScope.resolve(typeName);
         String funName=ctx.IDENT().getText();
 
-        //暂时不放入functionType
-        FunctionSymbol fun=new FunctionSymbol(funName,null,currentScope);
+        //暂时不放入paramsType
+        FunctionType functionType=new FunctionType( retTy,null);
+        FunctionSymbol fun=new FunctionSymbol(funName,functionType,currentScope);
 
         //函数本身还是符号;需要在全局作用域定义
         if(currentScope.getSymbols().get(funName)!=null) System.err.println("Error type 4 at Line "+ctx.start.getLine()+": Redefined function: " + funName);
         currentScope.define(fun);
         currentScope=fun;
+        //Todo
+        //如果重定义的函数，无需进入函数体
 
 
 
@@ -93,19 +97,14 @@ public class SymbolTableListener extends SysYParserBaseListener{
 
     }
 
-  //  @Override
-//    public void exitFuncTypeInt(SysYParser.FuncTypeIntContext ctx) {
-//        typeProperty.put(ctx, new BasicTypeSymbol("int"));
-//    }
-//    public void exitFuncTypeVoid(SysYParser.FuncTypeVoidContext ctx) {
-//        typeProperty.put(ctx, new BasicTypeSymbol("void"));
-//    }
+
 
     //funcDef : funcType IDENT L_PAREN (funcFParams)? R_PAREN block ;
+
     public void exitFuncFParams(SysYParser.FuncFParamsContext ctx) {
         SysYParser.FuncDefContext parent_ctx=(SysYParser.FuncDefContext)ctx.parent;
         String funcName=parent_ctx.IDENT().getText();
-        Type retTy= (Type) currentScope.resolve(funcName);
+       //
         ArrayList<Type> paramsType=new ArrayList<>();
        for(SysYParser.FuncFParamContext funcFParamContext:ctx.funcFParam()){
             Type paramType=typeProperty.get(funcFParamContext);
@@ -113,9 +112,9 @@ public class SymbolTableListener extends SysYParserBaseListener{
               paramsType.add(paramType);
           }
        }
-
-       FunctionType functionType=new FunctionType(retTy,paramsType);
-       currentScope.getSymbols().get(funcName).setType(functionType);
+       Symbol symbol= currentScope.resolve(funcName);
+       FunctionType functionType=(FunctionType) symbol.getType();
+       functionType.setParamsType(paramsType);
     }
 
     //定义函数形参中的变量
@@ -160,9 +159,12 @@ public class SymbolTableListener extends SysYParserBaseListener{
     public void exitLVal(SysYParser.LValContext ctx) {
         String varName=ctx.IDENT().getText();
         //在lval节点上附上其类型信息，处理ID
-        if( currentScope.resolve(varName)==null)
-        //如果是未定义的变量，报错
+        if( currentScope.resolve(varName)==null){
+            //如果是未定义的变量，报错
+            typeProperty.put(ctx,new NoneType());
             System.err.println("Error type 1 at Line "+ctx.start.getLine()+": Undefined variable: " + varName);
+        }
+
 
         else{
 
@@ -182,7 +184,16 @@ public class SymbolTableListener extends SysYParserBaseListener{
 
 
             }
-            else target_type=var_type;
+            else {
+
+                //对非数组使用下标
+                if(ctx.exp().size()>0) {
+                    target_type=new NoneType();
+                    System.err.println("Error type 9 at Line "+ctx.start.getLine()+": Not an array: "+varName);
+                }
+                else target_type=var_type;
+            }
+
             typeProperty.put(ctx,target_type);
 
         }
@@ -192,11 +203,80 @@ public class SymbolTableListener extends SysYParserBaseListener{
 
     //函数调用时检查是否使用没有声明和定义的函数
     public void enterCall(SysYParser.CallContext ctx) {
-        String funcName=ctx.IDENT().getText();
-       if( currentScope.resolve(funcName)==null)
-           System.err.println("Error type 2 at Line "+ctx.start.getLine()+": Undefined function: " + funcName);
+        String name=ctx.IDENT().getText();
+        Symbol symbol=currentScope.resolve(name);
+       if( symbol==null){
+           typeProperty.put(ctx,new NoneType());
+
+           System.err.println("Error type 2 at Line "+ctx.start.getLine()+": Undefined function: " + name);
+       }
+       else  {
+           Type type;
+           if(symbol instanceof VariableSymbol){
+               type=new NoneType();
+               System.err.println("Error type 10 at Line "+ctx.start.getLine()+": Not a function: "+name);
+           }
+           else{
+               type= symbol.getType();
+
+           }
+           typeProperty.put(ctx,type);
+
+       }
+
+    }
+   //  IDENT L_PAREN funcRParams? R_PAREN
+    public void exitCall(SysYParser.CallContext ctx){
+        Type type=typeProperty.get(ctx);
+        if(!(type instanceof NoneType)){
+            ArrayList<Type> rparams=new ArrayList<>();
+            int rparams_cnt=0;
+            int fparams_cnt=0;
+            boolean paramfault=false;
+            if(ctx.funcRParams()!=null){
+                rparams_cnt=ctx.funcRParams().param().size();
+                for(SysYParser.ParamContext paramContext:ctx.funcRParams().param()){
+                    Type paramtype=typeProperty.get(paramContext);
+                    if(paramtype instanceof NoneType) paramfault=true;
+                }
+
+            }
+
+            if(!paramfault){
+                String funcName=ctx.IDENT().getText();
+                FunctionType functionType=(FunctionType) typeProperty.get(ctx);
+                if(functionType.paramsType!=null) fparams_cnt=functionType.paramsType.size();
+                if(fparams_cnt!= rparams_cnt){
+                    typeProperty.put(ctx,new NoneType());
+                    System.err.println("Error type 8 at Line "+ctx.start.getLine()+": Function is not applicable for arguments.");
+                }
+                else typeProperty.put(ctx,functionType.retTy);
+            }
+            else typeProperty.put(ctx,new NoneType());
+
+
+
+
+        }
+    }
+    //param (COMMA param)*
+    public void exitFuncRParams(SysYParser.FuncRParamsContext ctx){
+
+
+//       boolean paramfault=false;
+//        ArrayList<Type> paramsType=new ArrayList<>();
+//       for(SysYParser.ParamContext paramContext :ctx.param()){
+//            Type paramType=typeProperty.get(paramContext);
+//           if(paramType instanceof NoneType){
+//                paramfault=true;
+//          }
+//       }
+//      if(paramfault) typeProperty.put(ctx,new NoneType());
     }
 
+    public void exitParam(SysYParser.ParamContext ctx){
+        typeProperty.put(ctx,typeProperty.get(ctx.exp()));
+    }
 
     @Override public void exitExpLVal(SysYParser.ExpLValContext ctx) {
 
@@ -207,16 +287,35 @@ public class SymbolTableListener extends SysYParserBaseListener{
         typeProperty.put(ctx, new BasicTypeSymbol("int"));
 
     }
-
+    public void exitUnary(SysYParser.UnaryContext ctx){
+        Type type=typeProperty.get(ctx.exp());
+        if(!(type instanceof BasicTypeSymbol)) {
+            typeProperty.put(ctx,new NoneType());
+            System.err.println("Error type 6 at Line "+ctx.start.getLine()+": Type mismatched for operands.");
+        }
+        else typeProperty.put(ctx,new BasicTypeSymbol("int"));
+    }
     @Override
     public void exitMulDivMod(SysYParser.MulDivModContext ctx) {
        Type lhs=typeProperty.get(ctx.lhs);
-       Type rhs=typeProperty.get(ctx.lhs);
+       Type rhs=typeProperty.get(ctx.rhs);
+       if(!(lhs instanceof BasicTypeSymbol) || !(rhs instanceof BasicTypeSymbol)){
+            typeProperty.put(ctx,new NoneType());
+           System.err.println("Error type 6 at Line "+ctx.start.getLine()+": Type mismatched for operands.");
 
+       }
+       else typeProperty.put(ctx,new BasicTypeSymbol("int"));
     }
 
-    public void enterPlusMinus(SysYParser.PlusMinusContext ctx){
+    public void exitPlusMinus(SysYParser.PlusMinusContext ctx){
+        Type lhs=typeProperty.get(ctx.lhs);
+        Type rhs=typeProperty.get(ctx.rhs);
+        if(!(lhs instanceof BasicTypeSymbol) || !(rhs instanceof BasicTypeSymbol)){
+            typeProperty.put(ctx,new NoneType());
+            System.err.println("Error type 6 at Line "+ctx.start.getLine()+": Type mismatched for operands.");
 
+        }
+        else typeProperty.put(ctx,new BasicTypeSymbol("int"));
     }
 
     public void enterAssignStmt(SysYParser.AssignStmtContext ctx) {
@@ -228,25 +327,51 @@ public class SymbolTableListener extends SysYParserBaseListener{
         Type lhs=typeProperty.get(ctx.lhs);
         Type rhs=typeProperty.get(ctx.rhs);
         boolean ismatch=false;
-        if(lhs instanceof ArrayType && rhs instanceof ArrayType){
-            if(((ArrayType)lhs).dimen==((ArrayType)rhs).dimen) ismatch=true;
+        if(lhs instanceof FunctionType){
+            System.err.println("Error type 11 at Line "+ctx.start.getLine()+": The left-hand side of an assignment must be a variable.");
+        }
+        else {
+            if (lhs instanceof ArrayType && rhs instanceof ArrayType) {
+                if (((ArrayType) lhs).dimen == ((ArrayType) rhs).dimen) ismatch = true;
 
-        }
-        else if( lhs instanceof BasicTypeSymbol && rhs instanceof  ArrayType){
-            if(((ArrayType)rhs).dimen==0) ismatch=true;
+            } else if (lhs instanceof BasicTypeSymbol && rhs instanceof ArrayType) {
+                if (((ArrayType) rhs).dimen == 0) ismatch = true;
 
+            } else if (lhs instanceof ArrayType && rhs instanceof BasicTypeSymbol) {
+                if (((ArrayType) lhs).dimen == 0) ismatch = true;
+            } else if (lhs instanceof BasicTypeSymbol && rhs instanceof BasicTypeSymbol) {
+                ismatch = true;
+            }
+            //若等号右边有报操作符错误，则无需继续报错
+            if (!ismatch && !(rhs instanceof NoneType))
+                System.err.println("Error type 5 at Line " + ctx.start.getLine() + ": Type mismatched for assignment.");
         }
-        else if (lhs instanceof ArrayType && rhs instanceof  BasicTypeSymbol){
-            if(((ArrayType)lhs).dimen==0) ismatch=true;
-        }
-        else if(lhs instanceof BasicTypeSymbol && rhs instanceof  BasicTypeSymbol){
-            ismatch=true;
-        }
-        if(!ismatch)  System.err.println("Error type 5 at Line "+ctx.start.getLine()+": Type mismatched for assignment.");
-
     }
+    //RETURN (exp)? SEMICOLON  return a+2;
     public void exitReturnStmt(SysYParser.ReturnStmtContext ctx) {
-     //  String returnName=ctx.exp().getText();
+
+
+       Type type=typeProperty.get(ctx.exp());
+
+       if(currentScope instanceof LocalScope){
+           Scope scope=currentScope;
+           while(!(scope instanceof FunctionSymbol)){
+               scope=scope.getEnclosingScope();
+               //一直往上找父作用域名，直到找到函数作用域为止；
+           }
+           FunctionSymbol functionSymbol= ((FunctionSymbol) scope);
+           Type retTy= ((FunctionType)functionSymbol.getType()).retTy;
+           boolean ismatch=false;
+            if(retTy instanceof BasicTypeSymbol && type instanceof BasicTypeSymbol){
+                if(((BasicTypeSymbol) retTy).name.equals(((BasicTypeSymbol) type).name)) ismatch=true;
+
+
+            }
+            if(!ismatch && !(type instanceof NoneType)){
+                System.err.println("Error type 7 at Line " + ctx.start.getLine() + ": type.Type mismatched for return.");
+            }
+
+       }
     }
 
 

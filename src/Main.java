@@ -35,7 +35,7 @@ public class Main
         int lineNo = Integer.parseInt(args[1]);
         int column = Integer.parseInt(args[2]);
         String name = args[3];
-       // String source = "src/input.txt";
+   //     String source = "src/input.txt";
         CharStream input = CharStreams.fromFileName(source);
         //  CharStream input = CharStreams.fromFileName("src/input.txt");
         SysYLexer sysYLexer = new SysYLexer(input);

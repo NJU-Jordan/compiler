@@ -1,0 +1,6 @@
+int test1(int b){
+    return 1;
+}
+int main(){
+   int a=b+c+d;
+}

@@ -1,3 +1,5 @@
+import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.RuleContext;
 import org.antlr.v4.runtime.tree.ParseTreeProperty;
 import org.stringtemplate.v4.NoIndentWriter;
 
@@ -330,11 +332,15 @@ public class SymbolTableListener extends SysYParserBaseListener{
         }
         Type type=typeProperty.get(ctx.exp());
         if(!(type instanceof BasicTypeSymbol)) {
+            if(!(type instanceof NoneType)){
+
+                System.err.println("Error type 6 at Line "+ctx.start.getLine()+": Type mismatched for operands.");
+            }
             typeProperty.put(ctx,new NoneType());
-            System.err.println("Error type 6 at Line "+ctx.start.getLine()+": Type mismatched for operands.");
         }
         else typeProperty.put(ctx,new BasicTypeSymbol("int"));
     }
+
     @Override
     public void exitMulDivMod(SysYParser.MulDivModContext ctx) {
         if(!isValidFuc) {
@@ -343,9 +349,12 @@ public class SymbolTableListener extends SysYParserBaseListener{
        Type lhs=typeProperty.get(ctx.lhs);
        Type rhs=typeProperty.get(ctx.rhs);
        if(!(lhs instanceof BasicTypeSymbol) || !(rhs instanceof BasicTypeSymbol)){
-            typeProperty.put(ctx,new NoneType());
-           System.err.println("Error type 6 at Line "+ctx.start.getLine()+": Type mismatched for operands.");
+           if(!(lhs instanceof NoneType) && !(rhs instanceof NoneType)){
 
+               System.err.println("Error type 6 at Line "+ctx.start.getLine()+": Type mismatched for operands.");
+           }
+
+           typeProperty.put(ctx,new NoneType());
        }
        else typeProperty.put(ctx,new BasicTypeSymbol("int"));
     }
@@ -357,13 +366,90 @@ public class SymbolTableListener extends SysYParserBaseListener{
         Type lhs=typeProperty.get(ctx.lhs);
         Type rhs=typeProperty.get(ctx.rhs);
         if(!(lhs instanceof BasicTypeSymbol) || !(rhs instanceof BasicTypeSymbol)){
+            if(!(lhs instanceof NoneType)&&!(rhs instanceof NoneType)){
+                //只有左操作数和右操作数均不报错时，才报错
+                System.err.println("Error type 6 at Line "+ctx.start.getLine()+": Type mismatched for operands.");
+            }
             typeProperty.put(ctx,new NoneType());
-            System.err.println("Error type 6 at Line "+ctx.start.getLine()+": Type mismatched for operands.");
 
         }
         else typeProperty.put(ctx,new BasicTypeSymbol("int"));
     }
 
+    //处理cond
+
+    public void exitCondExp(SysYParser.CondExpContext ctx){
+        if(!isValidFuc) {
+            return ;
+        }
+
+        typeProperty.put(ctx, typeProperty.get(ctx.exp()));
+    }
+    public void exitLG(SysYParser.LGContext ctx){
+        if(!isValidFuc) {
+            return ;
+        }
+        Type lhs=typeProperty.get(ctx.lhs);
+        Type rhs=typeProperty.get(ctx.rhs);
+        if(!(lhs instanceof BasicTypeSymbol) || !(rhs instanceof BasicTypeSymbol)){
+            if(!(lhs instanceof NoneType)&&!(rhs instanceof NoneType)){
+                //只有左操作数和右操作数均不报错时，才报错
+                System.err.println("Error type 6 at Line "+ctx.start.getLine()+": Type mismatched for operands.");
+            }
+            typeProperty.put(ctx,new NoneType());
+
+        }
+        else typeProperty.put(ctx,new BasicTypeSymbol("int"));
+    }
+    public void exitENQ(SysYParser.ENQContext ctx) {
+
+        if(!isValidFuc) {
+            return ;
+        }
+        Type lhs=typeProperty.get(ctx.lhs);
+        Type rhs=typeProperty.get(ctx.rhs);
+        if(!(lhs instanceof BasicTypeSymbol) || !(rhs instanceof BasicTypeSymbol)){
+            if(!(lhs instanceof NoneType)&&!(rhs instanceof NoneType)){
+                //只有左操作数和右操作数均不报错时，才报错
+                System.err.println("Error type 6 at Line "+ctx.start.getLine()+": Type mismatched for operands.");
+            }
+            typeProperty.put(ctx,new NoneType());
+
+        }
+        else typeProperty.put(ctx,new BasicTypeSymbol("int"));
+    }
+    public void exitAnd(SysYParser.AndContext ctx) {
+        if(!isValidFuc) {
+            return ;
+        }
+        Type lhs=typeProperty.get(ctx.lhs);
+        Type rhs=typeProperty.get(ctx.rhs);
+        if(!(lhs instanceof BasicTypeSymbol) || !(rhs instanceof BasicTypeSymbol)){
+            if(!(lhs instanceof NoneType)&&!(rhs instanceof NoneType)){
+                //只有左操作数和右操作数均不报错时，才报错
+                System.err.println("Error type 6 at Line "+ctx.start.getLine()+": Type mismatched for operands.");
+            }
+            typeProperty.put(ctx,new NoneType());
+
+        }
+        else typeProperty.put(ctx,new BasicTypeSymbol("int"));
+    }
+    public void exitOr(SysYParser.OrContext ctx) {
+        if(!isValidFuc) {
+            return ;
+        }
+        Type lhs=typeProperty.get(ctx.lhs);
+        Type rhs=typeProperty.get(ctx.rhs);
+        if(!(lhs instanceof BasicTypeSymbol) || !(rhs instanceof BasicTypeSymbol)){
+            if(!(lhs instanceof NoneType)&&!(rhs instanceof NoneType)){
+                //只有左操作数和右操作数均不报错时，才报错
+                System.err.println("Error type 6 at Line "+ctx.start.getLine()+": Type mismatched for operands.");
+            }
+            typeProperty.put(ctx,new NoneType());
+
+        }
+        else typeProperty.put(ctx,new BasicTypeSymbol("int"));
+    }
     public void enterAssignStmt(SysYParser.AssignStmtContext ctx) {
      //   System.out.println("enter assignstmt!");;
     }

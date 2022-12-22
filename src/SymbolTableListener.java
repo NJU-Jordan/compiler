@@ -8,8 +8,10 @@ public class SymbolTableListener extends SysYParserBaseListener{
     private Scope currentScope = null;
     int localScopeCounter= 0;
 
+    public boolean hasErr=false;
     private final ParseTreeProperty<Type> typeProperty=new ParseTreeProperty<>();
 
+    private boolean isValidFuc=true;  //判断是否
   //  boolean detectErr=false;
     //开启新的Scope
     @Override
@@ -31,8 +33,11 @@ public class SymbolTableListener extends SysYParserBaseListener{
         FunctionSymbol fun=new FunctionSymbol(funName,functionType,currentScope);
 
         //函数本身还是符号;需要在全局作用域定义
-        if(currentScope.getSymbols().get(funName)!=null) System.err.println("Error type 4 at Line "+ctx.start.getLine()+": Redefined function: " + funName);
-        currentScope.define(fun);
+        if(currentScope.getSymbols().get(funName)!=null)
+        {   isValidFuc=false;
+            System.err.println("Error type 4 at Line "+ctx.start.getLine()+": Redefined function: " + funName);
+        }
+        else  currentScope.define(fun);
         currentScope=fun;
         //Todo
         //如果重定义的函数，无需进入函数体
@@ -45,7 +50,9 @@ public class SymbolTableListener extends SysYParserBaseListener{
 
 
     public void enterBlock(SysYParser.BlockContext ctx) {
-
+        if(!isValidFuc) {
+           return ;
+        }
         LocalScope localScope=new LocalScope(currentScope);
         String localScopeName=localScope.getName() + localScopeCounter;
         localScope.setName(localScopeName);
@@ -60,9 +67,13 @@ public class SymbolTableListener extends SysYParserBaseListener{
     }
 
     public void exitFuncDef(SysYParser.FuncDefContext ctx){
+        isValidFuc = true;
         currentScope=currentScope.getEnclosingScope();
     }
     public void exitBlock(SysYParser.BlockContext ctx){
+        if(!isValidFuc) {
+            return ;
+        }
         currentScope=currentScope.getEnclosingScope();
     }
 
@@ -74,6 +85,9 @@ public class SymbolTableListener extends SysYParserBaseListener{
     //        | IDENT ( L_BRACKT  constExp R_BRACKT  )* ASSIGN initVal
     //        ;
     public void exitVarDef(SysYParser.VarDefContext ctx) {
+        if(!isValidFuc) {
+            return ;
+        }
         SysYParser.VarDeclContext parent_ctx =parent_ctx= (SysYParser.VarDeclContext) ctx.parent;
         String typeName= parent_ctx.bType().getText();
 
@@ -102,6 +116,9 @@ public class SymbolTableListener extends SysYParserBaseListener{
     //funcDef : funcType IDENT L_PAREN (funcFParams)? R_PAREN block ;
 
     public void exitFuncFParams(SysYParser.FuncFParamsContext ctx) {
+        if(!isValidFuc) {
+            return ;
+        }
         SysYParser.FuncDefContext parent_ctx=(SysYParser.FuncDefContext)ctx.parent;
         String funcName=parent_ctx.IDENT().getText();
        //
@@ -121,7 +138,9 @@ public class SymbolTableListener extends SysYParserBaseListener{
     // funcFParam : bType IDENT (L_BRACKT  R_BRACKT (L_BRACKT  exp R_BRACKT )* )?
     // int [][exp];
     public void exitFuncFParam(SysYParser.FuncFParamContext ctx) {
-
+        if(!isValidFuc) {
+            return ;
+        }
         String typeName= ctx.bType().getText();
 
 
@@ -157,6 +176,9 @@ public class SymbolTableListener extends SysYParserBaseListener{
     //IDENT (L_BRACKT exp R_BRACKT)*  id[ ][ ]
     @Override
     public void exitLVal(SysYParser.LValContext ctx) {
+        if(!isValidFuc) {
+            return ;
+        }
         String varName=ctx.IDENT().getText();
         //在lval节点上附上其类型信息，处理ID
         if( currentScope.resolve(varName)==null){
@@ -203,6 +225,9 @@ public class SymbolTableListener extends SysYParserBaseListener{
 
     //函数调用时检查是否使用没有声明和定义的函数
     public void enterCall(SysYParser.CallContext ctx) {
+        if(!isValidFuc) {
+            return ;
+        }
         String name=ctx.IDENT().getText();
         Symbol symbol=currentScope.resolve(name);
        if( symbol==null){
@@ -227,6 +252,9 @@ public class SymbolTableListener extends SysYParserBaseListener{
     }
    //  IDENT L_PAREN funcRParams? R_PAREN
     public void exitCall(SysYParser.CallContext ctx){
+        if(!isValidFuc) {
+            return ;
+        }
         Type type=typeProperty.get(ctx);
         if(!(type instanceof NoneType)){
             ArrayList<Type> rparams=new ArrayList<>();
@@ -275,19 +303,31 @@ public class SymbolTableListener extends SysYParserBaseListener{
     }
 
     public void exitParam(SysYParser.ParamContext ctx){
+        if(!isValidFuc) {
+            return ;
+        }
         typeProperty.put(ctx,typeProperty.get(ctx.exp()));
     }
 
     @Override public void exitExpLVal(SysYParser.ExpLValContext ctx) {
+        if(!isValidFuc) {
+            return ;
+        }
 
         typeProperty.put(ctx, typeProperty.get(ctx.lVal()));
     }
         //处理等号右边的整数
     public void exitExpNumber(SysYParser.ExpNumberContext ctx) {
+        if(!isValidFuc) {
+            return ;
+        }
         typeProperty.put(ctx, new BasicTypeSymbol("int"));
 
     }
     public void exitUnary(SysYParser.UnaryContext ctx){
+        if(!isValidFuc) {
+            return ;
+        }
         Type type=typeProperty.get(ctx.exp());
         if(!(type instanceof BasicTypeSymbol)) {
             typeProperty.put(ctx,new NoneType());
@@ -297,6 +337,9 @@ public class SymbolTableListener extends SysYParserBaseListener{
     }
     @Override
     public void exitMulDivMod(SysYParser.MulDivModContext ctx) {
+        if(!isValidFuc) {
+            return ;
+        }
        Type lhs=typeProperty.get(ctx.lhs);
        Type rhs=typeProperty.get(ctx.rhs);
        if(!(lhs instanceof BasicTypeSymbol) || !(rhs instanceof BasicTypeSymbol)){
@@ -308,6 +351,9 @@ public class SymbolTableListener extends SysYParserBaseListener{
     }
 
     public void exitPlusMinus(SysYParser.PlusMinusContext ctx){
+        if(!isValidFuc) {
+            return ;
+        }
         Type lhs=typeProperty.get(ctx.lhs);
         Type rhs=typeProperty.get(ctx.rhs);
         if(!(lhs instanceof BasicTypeSymbol) || !(rhs instanceof BasicTypeSymbol)){
@@ -324,6 +370,9 @@ public class SymbolTableListener extends SysYParserBaseListener{
     //检查stmt中赋值号两侧类型是否匹配
     //lVal ASSIGN exp SEMICOLON  # AssignStmt
     public void exitAssignStmt(SysYParser.AssignStmtContext ctx) {
+        if(!isValidFuc) {
+            return ;
+        }
         Type lhs=typeProperty.get(ctx.lhs);
         Type rhs=typeProperty.get(ctx.rhs);
         boolean ismatch=false;
@@ -349,7 +398,9 @@ public class SymbolTableListener extends SysYParserBaseListener{
     }
     //RETURN (exp)? SEMICOLON  return a+2;
     public void exitReturnStmt(SysYParser.ReturnStmtContext ctx) {
-
+        if(!isValidFuc) {
+            return ;
+        }
 
        Type type=typeProperty.get(ctx.exp());
 

@@ -54,6 +54,7 @@ public class Main
         walker.walk(symbolTableListener,tree);
 
 
+
         //Visitor extends SysYParserBaseVisitor<Void>
 //        Visitor visitor = new Visitor(sysYLexer,sysYParser);
 //        if(errorListener.hasErr==1){

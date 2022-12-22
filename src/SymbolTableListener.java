@@ -94,9 +94,12 @@ public class SymbolTableListener extends SysYParserBaseListener{
     }
 
   //  @Override
-    public void exitFuncType(SysYParser.FuncTypeContext ctx) {
-       // ctx.
-    }
+//    public void exitFuncTypeInt(SysYParser.FuncTypeIntContext ctx) {
+//        typeProperty.put(ctx, new BasicTypeSymbol("int"));
+//    }
+//    public void exitFuncTypeVoid(SysYParser.FuncTypeVoidContext ctx) {
+//        typeProperty.put(ctx, new BasicTypeSymbol("void"));
+//    }
 
     //funcDef : funcType IDENT L_PAREN (funcFParams)? R_PAREN block ;
     public void exitFuncFParams(SysYParser.FuncFParamsContext ctx) {

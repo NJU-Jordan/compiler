@@ -37,6 +37,7 @@ public class SymbolTableListener extends SysYParserBaseListener{
         //函数本身还是符号;需要在全局作用域定义
         if(currentScope.getSymbols().get(funName)!=null)
         {   isValidFuc=false;
+            hasErr=true;
             System.err.println("Error type 4 at Line "+ctx.start.getLine()+": Redefined function: " + funName);
         }
         else  currentScope.define(fun);
@@ -107,6 +108,7 @@ public class SymbolTableListener extends SysYParserBaseListener{
         VariableSymbol var=new VariableSymbol(varName,type);
         if(currentScope.getSymbols().get(varName)!=null)
         {   typeProperty.put(ctx,new NoneType());
+            hasErr=true;
             System.err.println("Error type 3 at Line "+ctx.start.getLine()+": Redefined variable: " + varName);
         }
         else currentScope.define(var);
@@ -164,6 +166,7 @@ public class SymbolTableListener extends SysYParserBaseListener{
         //if(currentScope.getSymbols().get(varName)!=null)
         if(currentScope.getSymbols().get(varName)!=null)
         {   typeProperty.put(ctx,new NoneType());
+            hasErr=true;
             System.err.println("Error type 3 at Line "+ctx.start.getLine()+": Redefined variable: " + varName);
         }
         currentScope.define(var);
@@ -186,6 +189,7 @@ public class SymbolTableListener extends SysYParserBaseListener{
         if( currentScope.resolve(varName)==null){
             //如果是未定义的变量，报错
             typeProperty.put(ctx,new NoneType());
+            hasErr=true;
             System.err.println("Error type 1 at Line "+ctx.start.getLine()+": Undefined variable: " + varName);
         }
 
@@ -213,6 +217,7 @@ public class SymbolTableListener extends SysYParserBaseListener{
                 //对非数组使用下标
                 if(ctx.exp().size()>0) {
                     target_type=new NoneType();
+                    hasErr=true;
                     System.err.println("Error type 9 at Line "+ctx.start.getLine()+": Not an array: "+varName);
                 }
                 else target_type=var_type;
@@ -234,13 +239,14 @@ public class SymbolTableListener extends SysYParserBaseListener{
         Symbol symbol=currentScope.resolve(name);
        if( symbol==null){
            typeProperty.put(ctx,new NoneType());
-
+           hasErr=true;
            System.err.println("Error type 2 at Line "+ctx.start.getLine()+": Undefined function: " + name);
        }
        else  {
            Type type;
            if(symbol instanceof VariableSymbol){
                type=new NoneType();
+               hasErr=true;
                System.err.println("Error type 10 at Line "+ctx.start.getLine()+": Not a function: "+name);
            }
            else{
@@ -278,6 +284,7 @@ public class SymbolTableListener extends SysYParserBaseListener{
                 if(functionType.paramsType!=null) fparams_cnt=functionType.paramsType.size();
                 if(fparams_cnt!= rparams_cnt){
                     typeProperty.put(ctx,new NoneType());
+                    hasErr=true;
                     System.err.println("Error type 8 at Line "+ctx.start.getLine()+": Function is not applicable for arguments.");
                 }
                 else typeProperty.put(ctx,functionType.retTy);
@@ -333,7 +340,7 @@ public class SymbolTableListener extends SysYParserBaseListener{
         Type type=typeProperty.get(ctx.exp());
         if(!(type instanceof BasicTypeSymbol)) {
             if(!(type instanceof NoneType)){
-
+                hasErr=true;
                 System.err.println("Error type 6 at Line "+ctx.start.getLine()+": Type mismatched for operands.");
             }
             typeProperty.put(ctx,new NoneType());
@@ -350,7 +357,7 @@ public class SymbolTableListener extends SysYParserBaseListener{
        Type rhs=typeProperty.get(ctx.rhs);
        if(!(lhs instanceof BasicTypeSymbol) || !(rhs instanceof BasicTypeSymbol)){
            if(!(lhs instanceof NoneType) && !(rhs instanceof NoneType)){
-
+               hasErr=true;
                System.err.println("Error type 6 at Line "+ctx.start.getLine()+": Type mismatched for operands.");
            }
 
@@ -368,6 +375,7 @@ public class SymbolTableListener extends SysYParserBaseListener{
         if(!(lhs instanceof BasicTypeSymbol) || !(rhs instanceof BasicTypeSymbol)){
             if(!(lhs instanceof NoneType)&&!(rhs instanceof NoneType)){
                 //只有左操作数和右操作数均不报错时，才报错
+                hasErr=true;
                 System.err.println("Error type 6 at Line "+ctx.start.getLine()+": Type mismatched for operands.");
             }
             typeProperty.put(ctx,new NoneType());
@@ -394,6 +402,7 @@ public class SymbolTableListener extends SysYParserBaseListener{
         if(!(lhs instanceof BasicTypeSymbol) || !(rhs instanceof BasicTypeSymbol)){
             if(!(lhs instanceof NoneType)&&!(rhs instanceof NoneType)){
                 //只有左操作数和右操作数均不报错时，才报错
+                hasErr=true;
                 System.err.println("Error type 6 at Line "+ctx.start.getLine()+": Type mismatched for operands.");
             }
             typeProperty.put(ctx,new NoneType());
@@ -411,6 +420,7 @@ public class SymbolTableListener extends SysYParserBaseListener{
         if(!(lhs instanceof BasicTypeSymbol) || !(rhs instanceof BasicTypeSymbol)){
             if(!(lhs instanceof NoneType)&&!(rhs instanceof NoneType)){
                 //只有左操作数和右操作数均不报错时，才报错
+                hasErr=true;
                 System.err.println("Error type 6 at Line "+ctx.start.getLine()+": Type mismatched for operands.");
             }
             typeProperty.put(ctx,new NoneType());
@@ -427,6 +437,7 @@ public class SymbolTableListener extends SysYParserBaseListener{
         if(!(lhs instanceof BasicTypeSymbol) || !(rhs instanceof BasicTypeSymbol)){
             if(!(lhs instanceof NoneType)&&!(rhs instanceof NoneType)){
                 //只有左操作数和右操作数均不报错时，才报错
+                hasErr=true;
                 System.err.println("Error type 6 at Line "+ctx.start.getLine()+": Type mismatched for operands.");
             }
             typeProperty.put(ctx,new NoneType());
@@ -443,6 +454,7 @@ public class SymbolTableListener extends SysYParserBaseListener{
         if(!(lhs instanceof BasicTypeSymbol) || !(rhs instanceof BasicTypeSymbol)){
             if(!(lhs instanceof NoneType)&&!(rhs instanceof NoneType)){
                 //只有左操作数和右操作数均不报错时，才报错
+                hasErr=true;
                 System.err.println("Error type 6 at Line "+ctx.start.getLine()+": Type mismatched for operands.");
             }
             typeProperty.put(ctx,new NoneType());
@@ -463,6 +475,7 @@ public class SymbolTableListener extends SysYParserBaseListener{
         Type rhs=typeProperty.get(ctx.rhs);
         boolean ismatch=false;
         if(lhs instanceof FunctionType){
+            hasErr=true;
             System.err.println("Error type 11 at Line "+ctx.start.getLine()+": The left-hand side of an assignment must be a variable.");
         }
         else {
@@ -478,8 +491,11 @@ public class SymbolTableListener extends SysYParserBaseListener{
                 ismatch = true;
             }
             //若等号右边有报操作符错误，则无需继续报错
-            if (!ismatch && !(rhs instanceof NoneType))
+            if (!ismatch && !(rhs instanceof NoneType)){
+                hasErr=true;
                 System.err.println("Error type 5 at Line " + ctx.start.getLine() + ": Type mismatched for assignment.");
+            }
+
         }
     }
     //RETURN (exp)? SEMICOLON  return a+2;
@@ -505,6 +521,7 @@ public class SymbolTableListener extends SysYParserBaseListener{
 
             }
             if(!ismatch && !(type instanceof NoneType)){
+                hasErr=true;
                 System.err.println("Error type 7 at Line " + ctx.start.getLine() + ": type.Type mismatched for return.");
             }
 

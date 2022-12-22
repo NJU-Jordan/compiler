@@ -69,11 +69,11 @@ exp
    ;
 
 cond
-   : exp
-   | cond (LT | GT | LE | GE) cond
-   | cond (EQ | NEQ) cond
-   | cond AND cond
-   | cond OR cond
+   : exp                        # CondExp
+   | lhs=cond (LT | GT | LE | GE) rhs=cond  # LG
+   | lhs=cond (EQ | NEQ) rhs=cond    # ENQ
+   | lhs=cond AND rhs=cond           # And
+   | lhs=cond OR rhs=cond            # Or
    ;
 
 lVal

@@ -347,15 +347,65 @@ public interface SysYParserListener extends ParseTreeListener {
 	 */
 	void exitUnary(SysYParser.UnaryContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link SysYParser#cond}.
+	 * Enter a parse tree produced by the {@code CondExp}
+	 * labeled alternative in {@link SysYParser#cond}.
 	 * @param ctx the parse tree
 	 */
-	void enterCond(SysYParser.CondContext ctx);
+	void enterCondExp(SysYParser.CondExpContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link SysYParser#cond}.
+	 * Exit a parse tree produced by the {@code CondExp}
+	 * labeled alternative in {@link SysYParser#cond}.
 	 * @param ctx the parse tree
 	 */
-	void exitCond(SysYParser.CondContext ctx);
+	void exitCondExp(SysYParser.CondExpContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Or}
+	 * labeled alternative in {@link SysYParser#cond}.
+	 * @param ctx the parse tree
+	 */
+	void enterOr(SysYParser.OrContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Or}
+	 * labeled alternative in {@link SysYParser#cond}.
+	 * @param ctx the parse tree
+	 */
+	void exitOr(SysYParser.OrContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code And}
+	 * labeled alternative in {@link SysYParser#cond}.
+	 * @param ctx the parse tree
+	 */
+	void enterAnd(SysYParser.AndContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code And}
+	 * labeled alternative in {@link SysYParser#cond}.
+	 * @param ctx the parse tree
+	 */
+	void exitAnd(SysYParser.AndContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ENQ}
+	 * labeled alternative in {@link SysYParser#cond}.
+	 * @param ctx the parse tree
+	 */
+	void enterENQ(SysYParser.ENQContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ENQ}
+	 * labeled alternative in {@link SysYParser#cond}.
+	 * @param ctx the parse tree
+	 */
+	void exitENQ(SysYParser.ENQContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code LG}
+	 * labeled alternative in {@link SysYParser#cond}.
+	 * @param ctx the parse tree
+	 */
+	void enterLG(SysYParser.LGContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code LG}
+	 * labeled alternative in {@link SysYParser#cond}.
+	 * @param ctx the parse tree
+	 */
+	void exitLG(SysYParser.LGContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link SysYParser#lVal}.
 	 * @param ctx the parse tree

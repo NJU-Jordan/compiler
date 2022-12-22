@@ -211,11 +211,40 @@ public interface SysYParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitUnary(SysYParser.UnaryContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link SysYParser#cond}.
+	 * Visit a parse tree produced by the {@code CondExp}
+	 * labeled alternative in {@link SysYParser#cond}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCond(SysYParser.CondContext ctx);
+	T visitCondExp(SysYParser.CondExpContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Or}
+	 * labeled alternative in {@link SysYParser#cond}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOr(SysYParser.OrContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code And}
+	 * labeled alternative in {@link SysYParser#cond}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAnd(SysYParser.AndContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ENQ}
+	 * labeled alternative in {@link SysYParser#cond}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitENQ(SysYParser.ENQContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code LG}
+	 * labeled alternative in {@link SysYParser#cond}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLG(SysYParser.LGContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link SysYParser#lVal}.
 	 * @param ctx the parse tree

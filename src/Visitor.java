@@ -1,5 +1,6 @@
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Vocabulary;
+import org.antlr.v4.runtime.tree.ParseTreeProperty;
 import org.antlr.v4.runtime.tree.RuleNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
@@ -30,6 +31,7 @@ public class Visitor extends  SysYParserBaseVisitor{
 
     String replacedName;   //
     Scope effectReplacedScope;  //
+    private final ParseTreeProperty<String> idProperty=new ParseTreeProperty<>();
     private String[] rule_with_colors= new String[] {
          "","CONST[orange]", "INT[orange]", "VOID[orange]", "IF[orange]", "ELSE[orange]", "WHILE[orange]", "BREAK[orange]", "CONTINUE[orange]",
                 "RETURN[orange]", "PLUS[blue]", "MINUS[blue]", "MUL[blue]", "DIV[blue]", "MOD[blue]", "ASSIGN[blue]", "EQ[blue]", "NEQ[blue]",
@@ -160,7 +162,7 @@ public class Visitor extends  SysYParserBaseVisitor{
             String typeName = ctx.funcType().getText();
 
             Type retTy = (Type) globalScope.resolve(typeName);
-            String funName = ctx.IDENT().getText();
+            String funName = idProperty.get(ctx.id());
 
             //暂时不放入paramsType
             FunctionType functionType = new FunctionType(retTy, null);
@@ -219,7 +221,7 @@ public class Visitor extends  SysYParserBaseVisitor{
                 //   System.err.println(dimen);
             } else type = basictype;
 
-            String varName = ctx.IDENT().getText();
+            String varName = idProperty.get(ctx.id());
             VariableSymbol var = new VariableSymbol(varName, type);
 
         if(mode==0)    currentScope.define(var);
@@ -243,7 +245,7 @@ public class Visitor extends  SysYParserBaseVisitor{
                 //   System.err.println(dimen);
             } else type = basictype;
 
-            String varName = ctx.IDENT().getText();
+            String varName = idProperty.get(ctx.id());
             VariableSymbol var = new VariableSymbol(varName, type);
 
 
@@ -256,6 +258,11 @@ public class Visitor extends  SysYParserBaseVisitor{
 
 
         return visitChildren(ctx);
+    }
+
+    public Object visitId(SysYParser.IdContext ctx){
+        idProperty.put(ctx,ctx.IDENT().getText());
+        return super.visitId(ctx);
     }
     public boolean isReplacedTarget(String name,Scope scope){
         return name.equals(replacedName)&&effectReplacedScope==scope;

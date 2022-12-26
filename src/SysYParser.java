@@ -1101,7 +1101,9 @@ public class SysYParser extends Parser {
 		public BTypeContext bType() {
 			return getRuleContext(BTypeContext.class,0);
 		}
-		public TerminalNode IDENT() { return getToken(SysYParser.IDENT, 0); }
+		public IdContext id() {
+			return getRuleContext(IdContext.class,0);
+		}
 		public List<TerminalNode> L_BRACKT() { return getTokens(SysYParser.L_BRACKT); }
 		public TerminalNode L_BRACKT(int i) {
 			return getToken(SysYParser.L_BRACKT, i);
@@ -1145,7 +1147,7 @@ public class SysYParser extends Parser {
 			setState(178);
 			bType();
 			setState(179);
-			match(IDENT);
+			id();
 			setState(191);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
@@ -2717,7 +2719,7 @@ public class SysYParser extends Parser {
 		"\2\u00a9\27\3\2\2\2\u00aa\u00ab\t\2\2\2\u00ab\31\3\2\2\2\u00ac\u00b1\5"+
 		"\34\17\2\u00ad\u00ae\7!\2\2\u00ae\u00b0\5\34\17\2\u00af\u00ad\3\2\2\2"+
 		"\u00b0\u00b3\3\2\2\2\u00b1\u00af\3\2\2\2\u00b1\u00b2\3\2\2\2\u00b2\33"+
-		"\3\2\2\2\u00b3\u00b1\3\2\2\2\u00b4\u00b5\5\n\6\2\u00b5\u00c1\7#\2\2\u00b6"+
+		"\3\2\2\2\u00b3\u00b1\3\2\2\2\u00b4\u00b5\5\n\6\2\u00b5\u00c1\5*\26\2\u00b6"+
 		"\u00b7\7\37\2\2\u00b7\u00be\7 \2\2\u00b8\u00b9\7\37\2\2\u00b9\u00ba\5"+
 		"$\23\2\u00ba\u00bb\7 \2\2\u00bb\u00bd\3\2\2\2\u00bc\u00b8\3\2\2\2\u00bd"+
 		"\u00c0\3\2\2\2\u00be\u00bc\3\2\2\2\u00be\u00bf\3\2\2\2\u00bf\u00c2\3\2"+

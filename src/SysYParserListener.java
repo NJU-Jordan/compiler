@@ -417,16 +417,6 @@ public interface SysYParserListener extends ParseTreeListener {
 	 */
 	void exitLVal(SysYParser.LValContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link SysYParser#id}.
-	 * @param ctx the parse tree
-	 */
-	void enterId(SysYParser.IdContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link SysYParser#id}.
-	 * @param ctx the parse tree
-	 */
-	void exitId(SysYParser.IdContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link SysYParser#number}.
 	 * @param ctx the parse tree
 	 */

@@ -252,12 +252,6 @@ public interface SysYParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitLVal(SysYParser.LValContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link SysYParser#id}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitId(SysYParser.IdContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link SysYParser#number}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

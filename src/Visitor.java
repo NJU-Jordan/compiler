@@ -100,14 +100,8 @@ public class Visitor extends  SysYParserBaseVisitor{
 
     @Override
     public Object visitTerminal(TerminalNode node) {
-        if(node instanceof ParserRuleContext){
-            ParserRuleContext ctx=(ParserRuleContext) node;
-            cur_lineNo=ctx.start.getLine();
-            cur_column=ctx.start.getCharPositionInLine();
 
-        }
         String text=node.getText();
-
        if(mode==1&&findReplacedName()) {
            replacedName=text;
 

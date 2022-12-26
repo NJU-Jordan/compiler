@@ -12,6 +12,7 @@ public class SymbolTableListener extends SysYParserBaseListener{
 
     public boolean hasErr=false;
     private final ParseTreeProperty<Type> typeProperty=new ParseTreeProperty<>();
+    private final ParseTreeProperty<String> idProperty=new ParseTreeProperty<>();
 
     private boolean isValidFuc=true;  //判断是否
   //  boolean detectErr=false;
@@ -28,7 +29,7 @@ public class SymbolTableListener extends SysYParserBaseListener{
         String typeName=ctx.funcType().getText();
 
         Type retTy=(Type) globalScope.resolve(typeName);
-        String funName=ctx.IDENT().getText();
+        String funName=idProperty.get(ctx.id());
 
         //暂时不放入paramsType
         FunctionType functionType=new FunctionType( retTy,null);
@@ -104,7 +105,7 @@ public class SymbolTableListener extends SysYParserBaseListener{
         }
         else type=basictype;
 
-        String varName=ctx.IDENT().getText();
+        String varName=idProperty.get(ctx.id());
         VariableSymbol var=new VariableSymbol(varName,type);
         if(currentScope.getSymbols().get(varName)!=null)
         {   typeProperty.put(ctx,new NoneType());
@@ -124,7 +125,7 @@ public class SymbolTableListener extends SysYParserBaseListener{
             return ;
         }
         SysYParser.FuncDefContext parent_ctx=(SysYParser.FuncDefContext)ctx.parent;
-        String funcName=parent_ctx.IDENT().getText();
+        String funcName=idProperty.get(parent_ctx.id());
        //
         ArrayList<Type> paramsType=new ArrayList<>();
        for(SysYParser.FuncFParamContext funcFParamContext:ctx.funcFParam()){
@@ -184,7 +185,7 @@ public class SymbolTableListener extends SysYParserBaseListener{
         if(!isValidFuc) {
             return ;
         }
-        String varName=ctx.IDENT().getText();
+        String varName=idProperty.get(ctx.id());
         //在lval节点上附上其类型信息，处理ID
         if( currentScope.resolve(varName)==null){
             //如果是未定义的变量，报错
@@ -528,6 +529,11 @@ public class SymbolTableListener extends SysYParserBaseListener{
        }
     }
 
+
+
+    public void exitId(SysYParser.IdContext ctx) {
+        idProperty.put(ctx,ctx.IDENT().getText());
+    }
 
 
 }

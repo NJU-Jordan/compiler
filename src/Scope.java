@@ -7,5 +7,6 @@ public interface Scope {
     public void define(Symbol symbol);
     public Symbol resolve(String name);
 
-
+    public void addDerivedScope(Scope derivedScope);
+    public Scope nextDerivedScope();
 }

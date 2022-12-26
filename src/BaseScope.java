@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -6,11 +7,23 @@ public class BaseScope implements Scope {
     private final Map<String, Symbol> symbols = new LinkedHashMap<>(); //符号表
     private String name;
 
+    private ArrayList<Scope> derivedScopes=new ArrayList<>();
+    private int derivedPt=-1;
     public BaseScope(String name, Scope enclosingScope) {
         this.name = name;
         this.enclosingScope = enclosingScope;
     }
 
+    public void addDerivedScope(Scope derivedScope){
+        derivedScopes.add(derivedScope);
+    }
+    public Scope nextDerivedScope(){
+        if(derivedScopes.size()==0) return null;
+        derivedPt++;
+        if(derivedPt==derivedScopes.size()) derivedPt=0;
+        return  derivedScopes.get(derivedPt);
+
+    }
     public Scope getEnclosingScope() {
         return enclosingScope;
     }

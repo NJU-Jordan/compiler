@@ -64,8 +64,11 @@ public class Main
         visitor.setRenameInfo(lineNo,column,name);
         if(symbolTableListener.hasErr==false){
 
+            for(int i=0;i<3;i++){
+                visitor.setMode(i);
+                visitor.visit(tree); //create symbol  table
+            }
 
-            visitor.visit(tree); //create symbol  table
         }
 
    }

@@ -48,9 +48,9 @@ public class Main
 
         CommonTokenStream tokens = new CommonTokenStream(sysYLexer);
         SysYParser sysYParser = new SysYParser(tokens);
-        ErrorListener errorListener=new ErrorListener();
-        sysYParser.removeErrorListeners();
-        sysYParser.addErrorListener(errorListener);
+    //    ErrorListener errorListener=new ErrorListener();
+     //   sysYParser.removeErrorListeners();
+     //   sysYParser.addErrorListener(errorListener);
         ParseTree tree = sysYParser.program();
 
         ParseTreeWalker walker=new ParseTreeWalker();

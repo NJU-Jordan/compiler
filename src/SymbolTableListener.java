@@ -158,7 +158,7 @@ public class SymbolTableListener extends SysYParserBaseListener{
         }
         else type=basictype;
 
-        String varName=ctx.IDENT().getText();
+        String varName=idProperty.get(ctx.id());
         VariableSymbol var=new VariableSymbol(varName,type);
 
 

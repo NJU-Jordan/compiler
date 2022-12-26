@@ -30,7 +30,7 @@ public class Visitor extends  SysYParserBaseVisitor{
     String rename;
 
     String replacedName;   //
-    Scope effectReplacedScope;  //
+    Symbol replacedSymbol;  //
     private final ParseTreeProperty<String> idProperty=new ParseTreeProperty<>();
     private String[] rule_with_colors= new String[] {
          "","CONST[orange]", "INT[orange]", "VOID[orange]", "IF[orange]", "ELSE[orange]", "WHILE[orange]", "BREAK[orange]", "CONTINUE[orange]",
@@ -106,9 +106,9 @@ public class Visitor extends  SysYParserBaseVisitor{
        if(mode==1&&findReplacedName()) {
            replacedName=text;
 
-           effectReplacedScope=currentScope;
+           replacedSymbol=currentScope.resolve(replacedName);
        }
-       if(mode==2 &&isReplacedTarget(text,currentScope)){
+       if(mode==2 &&isReplacedTarget(text)){
            mode=2;
 
                text=rename;
@@ -280,13 +280,9 @@ public class Visitor extends  SysYParserBaseVisitor{
     }
 
 
-    public boolean isReplacedTarget(String name,Scope scope){
-        boolean isderivedScope=false;
-        while(scope!=null){
-            if(scope==effectReplacedScope) isderivedScope=true;
-            scope=scope.getEnclosingScope();
-        }
-        return name.equals(replacedName)&&isderivedScope;
+    public boolean isReplacedTarget(String name){
+
+        return name.equals(replacedName)&&currentScope.resolve(name)==replacedSymbol;
     }
 
     public boolean findReplacedName(){

@@ -82,4 +82,10 @@ public class Visitor extends  SysYParserBaseVisitor{
         return super.visitTerminal(node);
     }
 
+
+    public Object visitFuncDef(SysYParser.FuncDefContext ctx) {
+        System.out.println("fuuuuuuunc");
+        return null;
+    }
+
 }

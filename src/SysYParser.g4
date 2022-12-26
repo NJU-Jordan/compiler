@@ -18,7 +18,7 @@ constDecl : CONST bType constDef (COMMA constDef ) * SEMICOLON ;
 
 bType : INT ;
 
-constDef : IDENT ( L_BRACKT constExp R_BRACKT )* ASSIGN constInitVal ;
+constDef : id ( L_BRACKT constExp R_BRACKT )* ASSIGN constInitVal ;
 
 constInitVal : constExp
              | L_BRACE ( constInitVal (COMMA constInitVal )* )? R_BRACE
@@ -27,14 +27,14 @@ constInitVal : constExp
 varDecl : bType varDef ( COMMA varDef ) * SEMICOLON
         ;
 
-varDef  : IDENT ( L_BRACKT constExp R_BRACKT ) *
-        | IDENT ( L_BRACKT  constExp R_BRACKT  )* ASSIGN initVal
+varDef  : id ( L_BRACKT constExp R_BRACKT ) *
+        | id ( L_BRACKT  constExp R_BRACKT  )* ASSIGN initVal
         ;
 
 
 initVal : exp | L_BRACE ( initVal ( COMMA initVal ) * )?  R_BRACE ;
 
-funcDef : funcType IDENT L_PAREN (funcFParams)? R_PAREN block ;
+funcDef : funcType id L_PAREN (funcFParams)? R_PAREN block ;
 
 funcType :  VOID  | INT;
 
@@ -77,8 +77,12 @@ cond
    ;
 
 lVal
-   : IDENT (L_BRACKT exp R_BRACKT)*
+   : id (L_BRACKT exp R_BRACKT)*
    ;
+
+id:
+    IDENT
+    ;
 
 number
    : INTEGR_CONST

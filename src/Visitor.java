@@ -98,14 +98,17 @@ public class Visitor extends  SysYParserBaseVisitor{
 
     @Override
     public Object visitTerminal(TerminalNode node) {
-       String text=node.getText();;
+        if(node instanceof ParserRuleContext){
+            ParserRuleContext ctx=(ParserRuleContext) node;
+            cur_lineNo=ctx.start.getLine();
+            cur_column=ctx.start.getCharPositionInLine();
+
+        }
+        String text=node.getText();
 
        if(mode==1&&findReplacedName()) {
            replacedName=text;
-           if(text.equals("=")) {
 
-               text=text;
-           }
            effectReplacedScope=currentScope;
        }
        if(mode==2 &&isReplacedTarget(text,currentScope)){
@@ -247,7 +250,7 @@ public class Visitor extends  SysYParserBaseVisitor{
             //if(currentScope.getSymbols().get(varName)!=null)
 
          if(mode==0)   currentScope.define(var);
-       return null;
+       return super.visitFuncFParam(ctx);
     }
     public Object visitLVal(SysYParser.LValContext ctx) {
 

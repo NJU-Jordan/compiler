@@ -6,8 +6,8 @@ import org.stringtemplate.v4.NoIndentWriter;
 import java.util.ArrayList;
 
 public class SymbolTableListener extends SysYParserBaseListener{
-    private GlobalScope globalScope = null;
-    private Scope currentScope = null;
+    public GlobalScope globalScope = null;
+    public Scope currentScope = null;
     int localScopeCounter= 0;
 
     public boolean hasErr=false;

@@ -28,14 +28,18 @@ public class Main
     }
     public static void main(String[] args) throws IOException {
 //         //      System.out.println(toDEC("0"));
-        if (args.length < 4) {
-            System.err.println("input path is required");
-        }
-        String source = args[0];
-        int lineNo = Integer.parseInt(args[1]);
-        int column = Integer.parseInt(args[2]);
-        String name = args[3];
-  //      String source = "src/input.txt";
+//        if (args.length < 4) {
+//            System.err.println("input path is required");
+//        }
+//        String source = args[0];
+//        int lineNo = Integer.parseInt(args[1]);
+//        int column = Integer.parseInt(args[2]);
+//        String name = args[3];
+
+        int lineNo = 8;
+        int column = 4;
+        String name = "d";
+        String source = "src/input.txt";
         CharStream input = CharStreams.fromFileName(source);
         //  CharStream input = CharStreams.fromFileName("src/input.txt");
         SysYLexer sysYLexer = new SysYLexer(input);
@@ -56,11 +60,12 @@ public class Main
 
 
 //        Visitor extends SysYParserBaseVisitor<Void>
-        Visitor visitor = new Visitor(sysYLexer,sysYParser);
+        Visitor visitor = new Visitor(sysYLexer,sysYParser,symbolTableListener);
+        visitor.setRenameInfo(lineNo,column,name);
         if(symbolTableListener.hasErr==false){
 
 
-            visitor.visit(tree);
+            visitor.visit(tree); //create symbol  table
         }
 
    }

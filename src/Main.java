@@ -31,6 +31,8 @@ public class Main
         if (args.length < 4) {
             System.err.println("input path is required");
         }
+
+
         String source = args[0];
         int lineNo = Integer.parseInt(args[1]);
         int column = Integer.parseInt(args[2]);

@@ -257,7 +257,12 @@ public class Visitor extends  SysYParserBaseVisitor{
 
 
     public boolean isReplacedTarget(String name,Scope scope){
-        return name.equals(replacedName)&&effectReplacedScope==scope;
+        boolean isderivedScope=false;
+        while(scope!=null){
+            if(scope==effectReplacedScope) isderivedScope=true;
+            scope=scope.getEnclosingScope();
+        }
+        return name.equals(replacedName)&&isderivedScope;
     }
 
     public boolean findReplacedName(){

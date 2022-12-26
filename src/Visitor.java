@@ -100,7 +100,8 @@ public class Visitor extends  SysYParserBaseVisitor{
 
     @Override
     public Object visitTerminal(TerminalNode node) {
-
+        cur_lineNo=node.getSymbol().getLine();
+        cur_column=node.getSymbol().getCharPositionInLine();
         String text=node.getText();
        if(mode==1&&findReplacedName()) {
            replacedName=text;
@@ -131,7 +132,7 @@ public class Visitor extends  SysYParserBaseVisitor{
 
 
        //refresh lineno && column
-        cur_column=cur_column+text.length();
+       // cur_column=cur_column+text.length();
         return super.visitTerminal(node);
     }
 

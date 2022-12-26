@@ -83,9 +83,9 @@ public class Visitor extends  SysYParserBaseVisitor{
     }
 
 
-    public Object visitFuncDef(SysYParser.FuncDefContext ctx) {
-        System.out.println("fuuuuuuunc");
-        return null;
-    }
+//    public Object visitFuncDef(SysYParser.FuncDefContext ctx) {
+//      //  System.out.println("fuuuuuuunc");
+//        return null;
+//    }
 
 }

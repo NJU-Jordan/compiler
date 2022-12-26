@@ -199,7 +199,31 @@ public class Visitor extends  SysYParserBaseVisitor{
             return null;
 
     }
+   // constDef : IDENT ( L_BRACKT constExp R_BRACKT )* ASSIGN constInitVal ;
+    public Object visitConstDef(SysYParser.ConstDefContext ctx) {
 
+
+
+        SysYParser.ConstDeclContext parent_ctx = parent_ctx = (SysYParser.ConstDeclContext) ctx.parent;
+        String typeName = parent_ctx.bType().getText();
+
+
+        int dimen = ctx.constExp().size();
+        Type basictype = (Type) currentScope.resolve(typeName);
+        Type type;
+        if (dimen > 0) {
+            type = new ArrayType(dimen, basictype);
+            //   System.err.println(dimen);
+        } else type = basictype;
+
+        String varName = ctx.IDENT().getText();
+        VariableSymbol var = new VariableSymbol(varName, type);
+
+        if(mode==0)    currentScope.define(var);
+
+
+        return super.visitConstDef(ctx);
+    }
     public Object visitVarDef(SysYParser.VarDefContext ctx) {
 
 

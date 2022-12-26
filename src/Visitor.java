@@ -156,7 +156,7 @@ public class Visitor extends  SysYParserBaseVisitor{
             String typeName = ctx.funcType().getText();
 
             Type retTy = (Type) globalScope.resolve(typeName);
-            String funName = idProperty.get(ctx.id());
+            String funName = ctx.IDENT().getText();
 
             //暂时不放入paramsType
             FunctionType functionType = new FunctionType(retTy, null);
@@ -215,7 +215,7 @@ public class Visitor extends  SysYParserBaseVisitor{
                 //   System.err.println(dimen);
             } else type = basictype;
 
-            String varName = idProperty.get(ctx.id());
+            String varName = ctx.IDENT().getText();
             VariableSymbol var = new VariableSymbol(varName, type);
 
         if(mode==0)    currentScope.define(var);
@@ -239,7 +239,7 @@ public class Visitor extends  SysYParserBaseVisitor{
                 //   System.err.println(dimen);
             } else type = basictype;
 
-            String varName = idProperty.get(ctx.id());
+            String varName = ctx.IDENT().getText();
             VariableSymbol var = new VariableSymbol(varName, type);
 
 
@@ -254,10 +254,7 @@ public class Visitor extends  SysYParserBaseVisitor{
         return visitChildren(ctx);
     }
 
-    public Object visitId(SysYParser.IdContext ctx){
-        idProperty.put(ctx,ctx.IDENT().getText());
-        return super.visitId(ctx);
-    }
+
     public boolean isReplacedTarget(String name,Scope scope){
         return name.equals(replacedName)&&effectReplacedScope==scope;
     }

@@ -81,6 +81,39 @@ public class SymbolTableListener extends SysYParserBaseListener{
         currentScope=currentScope.getEnclosingScope();
     }
 
+    //varDecl : bType varDef ( COMMA varDef ) * SEMICOLON
+    //        ;
+    //
+    //varDef  : IDENT ( L_BRACKT constExp R_BRACKT ) *
+    //        | IDENT ( L_BRACKT  constExp R_BRACKT  )* ASSIGN initVal
+    //        ;
+    public void exitConstDef(SysYParser.ConstDefContext ctx) {
+        if(!isValidFuc) {
+            return ;
+        }
+        SysYParser.ConstDeclContext parent_ctx =parent_ctx= (SysYParser.ConstDeclContext) ctx.parent;
+        String typeName= parent_ctx.bType().getText();
+
+
+        int dimen=ctx.constExp().size();
+        Type basictype=(Type) currentScope.resolve(typeName);
+        Type type;
+        if(dimen> 0) {
+            type=new ArrayType(dimen,basictype);
+            //   System.err.println(dimen);
+        }
+        else type=basictype;
+
+        String varName=ctx.IDENT().getText();
+        VariableSymbol var=new VariableSymbol(varName,type);
+        if(currentScope.getSymbols().get(varName)!=null)
+        {   typeProperty.put(ctx,new NoneType());
+            hasErr=true;
+            System.err.println("Error type 3 at Line "+ctx.start.getLine()+": Redefined variable: " + varName);
+        }
+        else currentScope.define(var);
+
+    }
 
     //什么时候定义Symbol
 

@@ -334,7 +334,9 @@ public class SymbolTableListener extends SysYParserBaseListener{
                     else if (fparams_cnt != rparams_cnt) ismatch = false;
                     else {
                         for (int i = 0; i < fparams_cnt; i++) {
-                            if (functionType.paramsType.get(i).getIdentity() != rparams.get(i).getIdentity()) {
+                            int id1=functionType.paramsType.get(i).getIdentity();
+                            int id2=rparams.get(i).getIdentity();
+                            if ( id1!= id2) {
                                 ismatch = false;
                                 break;
                             }

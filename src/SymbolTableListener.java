@@ -243,7 +243,9 @@ public class SymbolTableListener extends SysYParserBaseListener{
                     target_type=new ArrayType(dimen,basictype);
                     //   System.err.println(dimen);
                 }
-                else target_type=basictype;
+                else if(dimen<0){
+                    target_type=new NoneType();
+                }else target_type=basictype;
 
 
 

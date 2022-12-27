@@ -4,7 +4,7 @@ public class FunctionType implements Type{
 
          Type retTy;
 
-
+        public  int identity=2;
         ArrayList<Type> paramsType;
 
         public FunctionType(Type retTy,ArrayList<Type> paramsType){
@@ -21,5 +21,8 @@ public class FunctionType implements Type{
 
         public Type getRetTy() {
                 return retTy;
+        }
+        public int getIdentity(){
+                return identity;
         }
 }

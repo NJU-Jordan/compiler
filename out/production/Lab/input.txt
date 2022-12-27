@@ -1,0 +1,8 @@
+int a(int a[],int b,int c) {
+
+}
+
+int main() {
+    int b[3];
+    a(b,b[2][2],2);
+}

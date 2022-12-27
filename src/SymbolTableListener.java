@@ -184,7 +184,7 @@ public class SymbolTableListener extends SysYParserBaseListener{
         String typeName= ctx.bType().getText();
 
 
-        int dimen=ctx.exp().size();
+        int dimen=ctx.L_BRACKT().size();
         Type basictype=(Type) currentScope.resolve(typeName);
         Type type;
         if(dimen> 0) {
@@ -205,7 +205,10 @@ public class SymbolTableListener extends SysYParserBaseListener{
             hasErr=true;
             System.err.println("Error type 3 at Line "+ctx.start.getLine()+": Redefined variable: " + varName);
         }
-        currentScope.define(var);
+        else{
+            currentScope.define(var);
+            typeProperty.put(ctx,type);
+        }
 
 
     }
@@ -313,7 +316,9 @@ public class SymbolTableListener extends SysYParserBaseListener{
                 rparams_cnt=ctx.funcRParams().param().size();
                 for(SysYParser.ParamContext paramContext:ctx.funcRParams().param()){
                     Type paramtype=typeProperty.get(paramContext);
+                    rparams.add(paramtype);
                     if(paramtype instanceof NoneType) paramfault=true;
+
                 }
 
             }
@@ -322,7 +327,17 @@ public class SymbolTableListener extends SysYParserBaseListener{
                 String funcName=ctx.IDENT().getText();
                 FunctionType functionType=(FunctionType) typeProperty.get(ctx);
                 if(functionType.paramsType!=null) fparams_cnt=functionType.paramsType.size();
-                if(fparams_cnt!= rparams_cnt){
+                boolean ismatch=true;
+                if(fparams_cnt!= rparams_cnt) ismatch=false;
+                else{
+                    for(int i=0;i<fparams_cnt;i++){
+                        if(functionType.paramsType.get(i).getIdentity()!=rparams.get(i).getIdentity()) {
+                            ismatch=false;
+                            break;
+                        }
+                    }
+                }
+                if(!ismatch){
                     typeProperty.put(ctx,new NoneType());
                     hasErr=true;
                     System.err.println("Error type 8 at Line "+ctx.start.getLine()+": Function is not applicable for arguments.");

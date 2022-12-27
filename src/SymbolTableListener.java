@@ -272,7 +272,7 @@ public class SymbolTableListener extends SysYParserBaseListener{
             return ;
         }
         String name=ctx.IDENT().getText();
-        Symbol symbol=currentScope.resolve(name);
+        Symbol symbol=globalScope.resolve(name);
        if( symbol==null){
            typeProperty.put(ctx,new NoneType());
            hasErr=true;

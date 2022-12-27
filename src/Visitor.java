@@ -4,6 +4,7 @@ import org.antlr.v4.runtime.tree.ParseTreeProperty;
 import org.antlr.v4.runtime.tree.RuleNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,6 +32,8 @@ public class Visitor extends  SysYParserBaseVisitor{
 
     String replacedName;   //
     Symbol replacedSymbol;  //
+
+    boolean is_call_name=false;
     private final ParseTreeProperty<String> idProperty=new ParseTreeProperty<>();
     private String[] rule_with_colors= new String[] {
          "","CONST[orange]", "INT[orange]", "VOID[orange]", "IF[orange]", "ELSE[orange]", "WHILE[orange]", "BREAK[orange]", "CONTINUE[orange]",
@@ -109,7 +112,7 @@ public class Visitor extends  SysYParserBaseVisitor{
            replacedSymbol=currentScope.resolve(replacedName);
        }
        if(mode==2 &&isReplacedTarget(text)){
-           mode=2;
+
             if(cur_column==10) {
                 cur_column=cur_column;
                 isReplacedTarget(text);
@@ -156,12 +159,13 @@ public class Visitor extends  SysYParserBaseVisitor{
 
     }
     public Object visitFuncDef(SysYParser.FuncDefContext ctx) {
+        String funName = ctx.IDENT().getText();
         if (mode == 0) {
 
             String typeName = ctx.funcType().getText();
 
             Type retTy = (Type) globalScope.resolve(typeName);
-            String funName = ctx.IDENT().getText();
+
 
             //暂时不放入paramsType
             FunctionType functionType = new FunctionType(retTy, null);
@@ -171,9 +175,14 @@ public class Visitor extends  SysYParserBaseVisitor{
 
             currentScope.define(fun);
             currentScope.addDerivedScope(fun);
-            //currentScope = fun;
+            currentScope = fun;
         }
-        //else  currentScope=currentScope.nextDerivedScope();
+        else {
+            FunctionSymbol functionSymbol=(FunctionSymbol) currentScope.resolve(funName);
+            FunctionType functionType=(FunctionType) functionSymbol.functionType;
+            if(functionType.paramsType==null)
+                currentScope=currentScope.nextDerivedScope();
+        }
 
             visitChildren(ctx);
 
@@ -182,9 +191,27 @@ public class Visitor extends  SysYParserBaseVisitor{
 
         return null;
     }
+
+    // if no param no enter
     public Object visitFuncFParams(SysYParser.FuncFParamsContext ctx){
-        currentScope=currentScope.nextDerivedScope(); // enter function scope
+        if(mode==0) {
+
+        }
+        else
+            currentScope=currentScope.nextDerivedScope(); // enter function scope
+
+
+
         super.visitFuncFParams(ctx);
+        if(ctx.funcFParam().size()!=0) {
+            ArrayList<Type> paramsType=new ArrayList<>();
+            paramsType.add(new BasicTypeSymbol("int"));
+            SysYParser.FuncDefContext parent_ctx=(SysYParser.FuncDefContext)ctx.parent;
+            String funcName=parent_ctx.IDENT().getText();
+            Symbol symbol= globalScope.resolve(funcName);
+            FunctionType functionType=(FunctionType) symbol.getType();
+            functionType.setParamsType(paramsType);
+        }
         return null;
     }
     public Object visitBlock(SysYParser.BlockContext ctx){
@@ -236,7 +263,7 @@ public class Visitor extends  SysYParserBaseVisitor{
 
 
 
-            SysYParser.VarDeclContext parent_ctx = parent_ctx = (SysYParser.VarDeclContext) ctx.parent;
+            SysYParser.VarDeclContext parent_ctx  = (SysYParser.VarDeclContext) ctx.parent;
             String typeName = parent_ctx.bType().getText();
 
 
@@ -287,10 +314,18 @@ public class Visitor extends  SysYParserBaseVisitor{
         return visitChildren(ctx);
     }
 
-
+    public Object visitCall(SysYParser.CallContext ctx) {
+        is_call_name=true;
+        return visitChildren(ctx);
+    }
     public boolean isReplacedTarget(String name){
-
-        return name.equals(replacedName)&&currentScope.resolve(name)==replacedSymbol;
+        boolean result=false;
+        if(is_call_name) {
+            result=globalScope.resolve(name)==replacedSymbol;
+            is_call_name=false;
+        }
+        else result=currentScope.resolve(name)==replacedSymbol;
+        return result;
     }
 
     public boolean findReplacedName(){

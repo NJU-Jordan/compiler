@@ -530,8 +530,8 @@ public class SymbolTableListener extends SysYParserBaseListener{
             } else if (lhs instanceof BasicTypeSymbol && rhs instanceof BasicTypeSymbol) {
                 ismatch = true;
             }
-            //若等号右边有报操作符错误，则无需继续报错
-            if (!ismatch && !(rhs instanceof NoneType)){
+            //若等号zuo右边有报操作符错误，则无需继续报错
+            if (!ismatch && !(rhs instanceof NoneType)&&(!(lhs instanceof NoneType))){
                 hasErr=true;
                 System.err.println("Error type 5 at Line " + ctx.start.getLine() + ": Type mismatched for assignment.");
             }

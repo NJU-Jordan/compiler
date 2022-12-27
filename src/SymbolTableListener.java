@@ -330,8 +330,8 @@ public class SymbolTableListener extends SysYParserBaseListener{
                 if(functionType.paramsType!=null) {
                     fparams_cnt = functionType.paramsType.size();
 
-
-                    if (fparams_cnt != rparams_cnt) ismatch = false;
+                    if(fparams_cnt==rparams_cnt && fparams_cnt==0) ismatch=true;
+                    else if (fparams_cnt != rparams_cnt) ismatch = false;
                     else {
                         for (int i = 0; i < fparams_cnt; i++) {
                             if (functionType.paramsType.get(i).getIdentity() != rparams.get(i).getIdentity()) {

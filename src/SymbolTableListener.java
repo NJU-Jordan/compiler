@@ -244,6 +244,8 @@ public class SymbolTableListener extends SysYParserBaseListener{
                     //   System.err.println(dimen);
                 }
                 else if(dimen<0){
+                    hasErr=true;
+                    System.err.println("Error type 9 at Line "+ctx.start.getLine()+": Not an array: "+varName);
                     target_type=new NoneType();
                 }else target_type=basictype;
 

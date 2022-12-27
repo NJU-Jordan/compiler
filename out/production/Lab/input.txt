@@ -1,8 +1,0 @@
-int a(int a,int b,int c) {
-
-}
-
-int main() {
-    int a[2];
-    a[2][2]=1;
-}

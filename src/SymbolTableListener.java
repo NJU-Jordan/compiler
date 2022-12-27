@@ -379,7 +379,9 @@ public class SymbolTableListener extends SysYParserBaseListener{
         }
         typeProperty.put(ctx,typeProperty.get(ctx.exp()));
     }
-
+    public void exitParens(SysYParser.ParensContext ctx) {
+        typeProperty.put(ctx, typeProperty.get(ctx.exp()));
+    }
     @Override public void exitExpLVal(SysYParser.ExpLValContext ctx) {
         if(!isValidFuc) {
             return ;

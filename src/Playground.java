@@ -7,12 +7,12 @@ import java.util.List;
 
 public class Playground {
 
-    public static int A(){
+    public static int A(int A){
         return  2;
     }
     public static void main(String[] args) throws IOException {
-       int A;
-       A= A();
+       int A=2;
+       A= A(A);
         System.out.println(A);
 
     }

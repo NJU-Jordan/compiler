@@ -167,7 +167,9 @@ public class SymbolTableListener extends SysYParserBaseListener{
               paramsType.add(paramType);
           }
        }
-       Symbol symbol= currentScope.resolve(funcName);
+
+        //Todo: find functionSymbol
+       Symbol symbol= globalScope.resolve(funcName);
        FunctionType functionType=(FunctionType) symbol.getType();
        functionType.setParamsType(paramsType);
     }

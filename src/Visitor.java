@@ -110,7 +110,10 @@ public class Visitor extends  SysYParserBaseVisitor{
        }
        if(mode==2 &&isReplacedTarget(text)){
            mode=2;
-
+            if(cur_column==10) {
+                cur_column=cur_column;
+                isReplacedTarget(text);
+            }
                text=rename;
        }
 
@@ -146,7 +149,8 @@ public class Visitor extends  SysYParserBaseVisitor{
 
             visitChildren(ctx);
 
-            currentScope = currentScope.getEnclosingScope();
+            currentScope = globalScope;
+         //   currentScope = currentScope.getEnclosingScope();
 
         return null;
 
@@ -167,9 +171,9 @@ public class Visitor extends  SysYParserBaseVisitor{
 
             currentScope.define(fun);
             currentScope.addDerivedScope(fun);
-            currentScope = fun;
+            //currentScope = fun;
         }
-        else  currentScope=currentScope.nextDerivedScope();
+        //else  currentScope=currentScope.nextDerivedScope();
 
             visitChildren(ctx);
 
@@ -178,7 +182,11 @@ public class Visitor extends  SysYParserBaseVisitor{
 
         return null;
     }
-
+    public Object visitFuncFParams(SysYParser.FuncFParamsContext ctx){
+        currentScope=currentScope.nextDerivedScope(); // enter function scope
+        super.visitFuncFParams(ctx);
+        return null;
+    }
     public Object visitBlock(SysYParser.BlockContext ctx){
 
         if(mode==0) {

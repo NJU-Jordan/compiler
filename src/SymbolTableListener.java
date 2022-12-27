@@ -326,14 +326,18 @@ public class SymbolTableListener extends SysYParserBaseListener{
             if(!paramfault){
                 String funcName=ctx.IDENT().getText();
                 FunctionType functionType=(FunctionType) typeProperty.get(ctx);
-                if(functionType.paramsType!=null) fparams_cnt=functionType.paramsType.size();
-                boolean ismatch=true;
-                if(fparams_cnt!= rparams_cnt) ismatch=false;
-                else{
-                    for(int i=0;i<fparams_cnt;i++){
-                        if(functionType.paramsType.get(i).getIdentity()!=rparams.get(i).getIdentity()) {
-                            ismatch=false;
-                            break;
+                boolean ismatch = true;
+                if(functionType.paramsType!=null) {
+                    fparams_cnt = functionType.paramsType.size();
+
+
+                    if (fparams_cnt != rparams_cnt) ismatch = false;
+                    else {
+                        for (int i = 0; i < fparams_cnt; i++) {
+                            if (functionType.paramsType.get(i).getIdentity() != rparams.get(i).getIdentity()) {
+                                ismatch = false;
+                                break;
+                            }
                         }
                     }
                 }

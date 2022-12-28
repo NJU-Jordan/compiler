@@ -38,7 +38,7 @@ clean:
 	rm -rf classes
 
 
-submit: clean compile
+submit: clean
 	git gc
 	bash ./submit.sh
 

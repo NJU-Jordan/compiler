@@ -28,18 +28,18 @@ public class Main
     }
     public static void main(String[] args) throws IOException {
 
-        if (args.length < 4) {
-            System.err.println("input path is required");
-        }
-        String source = args[0];
-        int lineNo = Integer.parseInt(args[1]);
-        int column = Integer.parseInt(args[2]);
-        String name = args[3];
+//        if (args.length < 4) {
+//            System.err.println("input path is required");
+//        }
+//        String source = args[0];
+//        int lineNo = Integer.parseInt(args[1]);
+//        int column = Integer.parseInt(args[2]);
+//        String name = args[3];
 
 //        int lineNo = 6;
 //        int column = 8;
 //        String name = "e";
-//        String source = "src/input.txt";
+         String source = "src/input.txt";
         CharStream input = CharStreams.fromFileName(source);
         //  CharStream input = CharStreams.fromFileName("src/input.txt");
         SysYLexer sysYLexer = new SysYLexer(input);
@@ -53,25 +53,29 @@ public class Main
      //   sysYParser.addErrorListener(errorListener);
         ParseTree tree = sysYParser.program();
 
-        ParseTreeWalker walker=new ParseTreeWalker();
-        SymbolTableListener symbolTableListener=new SymbolTableListener();
-        walker.walk(symbolTableListener,tree);
+       // ParseTreeWalker walker=new ParseTreeWalker();
+   //     SymbolTableListener symbolTableListener=new SymbolTableListener();
+   //     walker.walk(symbolTableListener,tree);
 
 
 
 //        Visitor extends SysYParserBaseVisitor<Void>
-        Visitor visitor = new Visitor(sysYLexer,sysYParser,symbolTableListener);
-        visitor.setRenameInfo(lineNo,column,name);
-        if(symbolTableListener.hasErr==false){
+//        Visitor visitor = new Visitor(sysYLexer,sysYParser,symbolTableListener);
+//        visitor.setRenameInfo(lineNo,column,name);
+//        if(symbolTableListener.hasErr==false){
+//
+//            for(int i=0;i<3;i++){
+//                visitor.setMode(i);
+//                visitor.visit(tree); //create symbol  table
+//            }
+//
+//        }
+//
 
-            for(int i=0;i<3;i++){
-                visitor.setMode(i);
-                visitor.visit(tree); //create symbol  table
-            }
-
-        }
-
-   }
+        MyVisitor myVisitor=new MyVisitor();
+        myVisitor.visit(tree);
+        myVisitor.OutPutConsole();
+      }
 
 
 }

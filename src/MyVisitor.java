@@ -234,9 +234,9 @@ public class MyVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
 
     }
 
-    public void OutputFile(){
+    public void OutputFile(String dest){
         final BytePointer error = new BytePointer();
-        LLVMPrintModuleToFile(module,"test.ll",error);
+        LLVMPrintModuleToFile(module,dest,error);
 
     }
 }

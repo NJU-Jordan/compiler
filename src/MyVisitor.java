@@ -1,4 +1,5 @@
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.ParseTreeProperty;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.bytedeco.javacpp.BytePointer;
 import org.bytedeco.javacpp.Pointer;
@@ -7,8 +8,9 @@ import org.bytedeco.llvm.LLVM.*;
 
 import static org.bytedeco.llvm.global.LLVM.*;
 
-public class MyVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
 
+public class MyVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
+    ParseTreeProperty<LLVMValueRef> valueProperty=new ParseTreeProperty<>();
     LLVMModuleRef module;
     LLVMBuilderRef builder;
 
@@ -113,17 +115,17 @@ public class MyVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
         //函数返回指令
 
          //TODO
-
-         LLVMValueRef result=visit(ctx.exp());
+        visitChildren(ctx);
+         LLVMValueRef result=valueProperty.get(ctx.exp());
         LLVMBuildRet(builder, /*result:LLVMValueRef*/result);
-        return super.visitReturnStmt(ctx);
+        return null;
     }
 
     @Override
     public LLVMValueRef visitPlusMinus(SysYParser.PlusMinusContext ctx) {
         visitChildren(ctx);
-        LLVMValueRef lhs=visit(ctx.lhs);
-        LLVMValueRef rhs=visit(ctx.rhs);
+        LLVMValueRef lhs=valueProperty.get(ctx.lhs);
+        LLVMValueRef rhs=valueProperty.get(ctx.rhs);
 
         LLVMValueRef result;
         if(ctx.PLUS()!=null){
@@ -135,14 +137,16 @@ public class MyVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
 
             result=LLVMBuildSub(builder,lhs,rhs,"result");
         }
-        return result;
+        valueProperty.put(ctx,result);
+        return null;
 
     }
     @Override
     public LLVMValueRef visitMulDivMod(SysYParser.MulDivModContext ctx) {
         visitChildren(ctx);
-        LLVMValueRef lhs=visit(ctx.lhs);
-        LLVMValueRef rhs=visit(ctx.rhs);
+        LLVMValueRef lhs=valueProperty.get(ctx.lhs);
+        LLVMValueRef rhs=valueProperty.get(ctx.rhs);
+
 
         LLVMValueRef result;
         if(ctx.MUL()!=null){
@@ -155,26 +159,29 @@ public class MyVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
             result=LLVMBuildSDiv(builder,lhs,rhs,"result");
         }
         else result=LLVMBuildSRem(builder,lhs,rhs,"result");
-        return result;
+        valueProperty.put(ctx,result);
+        return null;
     }
     @Override
     public LLVMValueRef visitNumber(SysYParser.NumberContext ctx) {
 
         visitChildren(ctx);
         int num=toDEC(ctx.INTEGR_CONST().getText());
-        return LLVMConstInt(i32Type, num, /* signExtend */ 0);
+        valueProperty.put(ctx,LLVMConstInt(i32Type, num, /* signExtend */ 0));
+        return null;
     }
     @Override
     public LLVMValueRef visitExpNumber(SysYParser.ExpNumberContext ctx) {
 
         visitChildren(ctx);
-        LLVMValueRef result= visit(ctx.number());
-        return result;
+        valueProperty.put(ctx,valueProperty.get(ctx.number()));
+        return null;
     }
     @Override
     public LLVMValueRef visitParens(SysYParser.ParensContext ctx) {
         visitChildren(ctx);
-        return visit(ctx.exp());
+        valueProperty.put(ctx,valueProperty.get(ctx.exp()));
+        return null;
     }
     @Override
     public LLVMValueRef visitUnary(SysYParser.UnaryContext ctx) {
@@ -190,11 +197,11 @@ public class MyVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
         //从内存中将值取出
        //LLVMValueRef value = LLVMBuildLoad(builder, pointer, /*varName:String*/"value");
 
-
-        LLVMValueRef tmp_=visit(ctx.exp());
+        visitChildren(ctx);
+        LLVMValueRef tmp_=valueProperty.get(ctx.exp());
         // 生成icmp
 
-        LLVMValueRef unary_op=visit(ctx.unaryOp());
+
         if(ctx.unaryOp().NOT()!=null) {
             tmp_ = LLVMBuildICmp(builder, LLVMIntNE, LLVMConstInt(i32Type, 0, 0), tmp_, "tmp_");
 // 生成xor
@@ -209,8 +216,8 @@ public class MyVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
             tmp_=LLVMBuildSub(builder,zero,tmp_,"tmp_");
         }
 
-        visitChildren(ctx);
-        return tmp_;
+       valueProperty.put(ctx,tmp_);
+        return null;
     }
 
 
@@ -236,7 +243,8 @@ public class MyVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
 
     public void OutputFile(String dest){
         final BytePointer error = new BytePointer();
-        LLVMPrintModuleToFile(module,dest,error);
-
+        if (LLVMPrintModuleToFile(module, dest, error) != 0) {    // moudle是你自定义的LLVMModuleRef对象
+            LLVMDisposeMessage(error);
+        }
     }
 }

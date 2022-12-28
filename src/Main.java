@@ -28,14 +28,14 @@ public class Main
     }
     public static void main(String[] args) throws IOException {
 
-//        if (args.length < 2) {
-//            System.err.println("input path is required");
-//        }
-//        String source = args[0];
-//       String dest=args[1];
+        if (args.length < 2) {
+            System.err.println("input path is required");
+        }
+        String source = args[0];
+       String dest=args[1];
 
-         String source = "src/input.txt";
-         String dest="test.ll";
+//         String source = "src/input.txt";
+//         String dest="test.ll";
         CharStream input = CharStreams.fromFileName(source);
         //  CharStream input = CharStreams.fromFileName("src/input.txt");
         SysYLexer sysYLexer = new SysYLexer(input);
@@ -49,28 +49,11 @@ public class Main
      //   sysYParser.addErrorListener(errorListener);
         ParseTree tree = sysYParser.program();
 
-       // ParseTreeWalker walker=new ParseTreeWalker();
-   //     SymbolTableListener symbolTableListener=new SymbolTableListener();
-   //     walker.walk(symbolTableListener,tree);
 
-
-
-//        Visitor extends SysYParserBaseVisitor<Void>
-//        Visitor visitor = new Visitor(sysYLexer,sysYParser,symbolTableListener);
-//        visitor.setRenameInfo(lineNo,column,name);
-//        if(symbolTableListener.hasErr==false){
-//
-//            for(int i=0;i<3;i++){
-//                visitor.setMode(i);
-//                visitor.visit(tree); //create symbol  table
-//            }
-//
-//        }
-//
 
         MyVisitor myVisitor=new MyVisitor();
         myVisitor.visit(tree);
-        myVisitor.OutPutConsole();
+     //   myVisitor.OutPutConsole();
         myVisitor.OutputFile(dest);
       }
 

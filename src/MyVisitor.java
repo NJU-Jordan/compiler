@@ -195,17 +195,17 @@ public class MyVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
         // 生成icmp
 
         LLVMValueRef unary_op=visit(ctx.unaryOp());
-        if(type==NOT) {
+        if(ctx.unaryOp().NOT()!=null) {
             tmp_ = LLVMBuildICmp(builder, LLVMIntNE, LLVMConstInt(i32Type, 0, 0), tmp_, "tmp_");
 // 生成xor
             tmp_ = LLVMBuildXor(builder, tmp_, LLVMConstInt(LLVMInt1Type(), 1, 0), "tmp_");
 // 生成zext
             tmp_ = LLVMBuildZExt(builder, tmp_, i32Type, "tmp_");
         }
-        else if(type==U_PLUS){
+        else if(ctx.unaryOp().PLUS()!=null){
 
         }
-        else if(type==U_MINUS){
+        else if(ctx.unaryOp().MINUS()!=null){
             tmp_=LLVMBuildSub(builder,zero,tmp_,"tmp_");
         }
 
@@ -216,17 +216,17 @@ public class MyVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
 
     @Override public LLVMValueRef visitUnaryOp(SysYParser.UnaryOpContext ctx) {
 
-        if(ctx.NOT()!=null){
-            type=NOT;
-        }
-        else if(ctx.PLUS()!=null){
-            type=U_PLUS;
-        }else if(ctx.MINUS()!=null){
-            type=U_MINUS;
-        }
+//        if(ctx.NOT()!=null){
+//            type=NOT;
+//        }
+//        else if(ctx.PLUS()!=null){
+//            type=U_PLUS;
+//        }else if(ctx.MINUS()!=null){
+//            type=U_MINUS;
+//        }
 
-        visitChildren(ctx);
-        return LLVMConstInt(i32Type, type, /* signExtend */ 0);
+
+        return visitChildren(ctx);
 
     }
     public void OutPutConsole(){

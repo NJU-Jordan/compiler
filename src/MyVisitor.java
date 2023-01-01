@@ -18,16 +18,13 @@ public class MyVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
 
 
     LLVMValueRef zero ;
-    final int NOT=0;
-    final int U_PLUS=1;
-    final int U_MINUS=2;
-    int type=-1;
-    final int MUL =  3;
-    final int DIV = 4;
 
-    final int MOD = 5;
-    final int PLUS= 6;
-    final int MINUS=7;
+    private GlobalScope globalScope = null;
+    private Scope currentScope = null;
+
+    private int localScopeCounter = 0;
+
+
     public MyVisitor(){
         //初始化LLVM
         LLVMInitializeCore(LLVMGetGlobalPassRegistry());
@@ -73,7 +70,14 @@ public class MyVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
     }
     @Override
     public LLVMValueRef visitProgram(SysYParser.ProgramContext ctx) {
-        return super.visitProgram(ctx);
+        globalScope = new GlobalScope(null);
+        currentScope = globalScope;
+
+        super.visitProgram(ctx);
+
+        currentScope = currentScope.getEnclosingScope();
+        return null;
+
     }
 
     @Override

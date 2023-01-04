@@ -1,12 +1,10 @@
 ; ModuleID = 'moudle'
 source_filename = "moudle"
 
-define i32 @main() {
+define void @main() {
 mainEntry:
   %a = alloca i32, align 4
-  store i32 0, i32* %a, align 4
+  store i32 2, i32* %a, align 4
   %a1 = load i32, i32* %a, align 4
   %result = add i32 %a1, 3
-  %a2 = load i32, i32* %a, align 4
-  ret i32 %a2
 }

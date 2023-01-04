@@ -19,6 +19,7 @@ public class MyVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
     LLVMBuilderRef builder;
 
     LLVMTypeRef i32Type;
+    LLVMTypeRef voidType;
 
 
     LLVMValueRef zero ;
@@ -45,6 +46,7 @@ public class MyVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
 
         //考虑到我们的语言中仅存在int一个基本类型，可以通过下面的语句为LLVM的int型重命名方便以后使用
         i32Type = LLVMInt32Type();
+        voidType=LLVMVoidType();
 
         zero= LLVMConstInt(i32Type, 0, /* signExtend */ 0);
 
@@ -101,7 +103,7 @@ public class MyVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
         if(ctx.funcFParams()!=null)
             paramSize=ctx.funcFParams().funcFParam().size();
         else paramSize=0;
-        LLVMTypeRef returnType = i32Type;
+        LLVMTypeRef returnType = ctx.funcType().INT()!=null?i32Type:voidType;
 
       //  生成函数参数类型
        PointerPointer<Pointer> argumentTypes = new PointerPointer<>(paramSize);

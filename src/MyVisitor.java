@@ -239,7 +239,7 @@ public class MyVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
 //initVal : exp | L_BRACE ( initVal ( COMMA initVal ) * )?  R_BRACE ;
     @Override
     public LLVMValueRef visitInitVal(SysYParser.InitValContext ctx) {
-
+        isLoadedValue.put(ctx,true);
 
         visitChildren(ctx);
 
@@ -292,7 +292,7 @@ public class MyVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
             return null;
     }
     @Override public LLVMValueRef visitConstInitVal(SysYParser.ConstInitValContext ctx) {
-
+        isLoadedValue.put(ctx,true);
         visitChildren(ctx);
 
         if(ctx.constExp()!=null){
@@ -306,6 +306,7 @@ public class MyVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
         return null;
     }
         @Override public LLVMValueRef visitConstExp(SysYParser.ConstExpContext ctx) {
+        isLoadedValue.put(ctx,isLoadedValue.get(ctx.parent));
         visitChildren(ctx);
         valueProperty.put(ctx,valueProperty.get(ctx.exp()));
         return  null;

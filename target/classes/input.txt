@@ -1,7 +1,9 @@
-void f(){
-    
+int f(int a){
+    const int b=a;
+
+    return b;
 }
 int main(){
-   f();
-
+   int x=2;
+   return f(x);
 }

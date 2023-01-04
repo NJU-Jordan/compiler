@@ -28,14 +28,14 @@ public class Main
     }
     public static void main(String[] args) throws IOException {
 
-//        if (args.length < 2) {
-//            System.err.println("input path is required");
-//        }
-//        String source = args[0];
-//       String dest=args[1];
+        if (args.length < 2) {
+            System.err.println("input path is required");
+        }
+        String source = args[0];
+       String dest=args[1];
 
-         String source = "src/input.txt";
-         String dest="test.ll";
+//         String source = "src/input.txt";
+//         String dest="test.ll";
         CharStream input = CharStreams.fromFileName(source);
         //  CharStream input = CharStreams.fromFileName("src/input.txt");
         SysYLexer sysYLexer = new SysYLexer(input);
@@ -53,7 +53,7 @@ public class Main
 
         MyVisitor myVisitor=new MyVisitor();
         myVisitor.visit(tree);
-        myVisitor.OutPutConsole();
+      //  myVisitor.OutPutConsole();
         myVisitor.OutputFile(dest);
       }
 

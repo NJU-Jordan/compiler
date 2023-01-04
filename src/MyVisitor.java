@@ -6,6 +6,7 @@ import org.bytedeco.javacpp.Pointer;
 import org.bytedeco.javacpp.PointerPointer;
 import org.bytedeco.llvm.LLVM.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 import static org.bytedeco.llvm.global.LLVM.*;
@@ -15,6 +16,8 @@ public class MyVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
     ParseTreeProperty<LLVMValueRef> valueProperty=new ParseTreeProperty<>();
     ParseTreeProperty<Boolean>  isLoadedValue=new ParseTreeProperty<>();
     // pass down to identify if the value needed to be loaded   beginning state is null , if true ,set it true
+    HashMap<String,LLVMTypeRef> funcProperty=new HashMap<>();
+    //store func info
     LLVMModuleRef module;
     LLVMBuilderRef builder;
 
@@ -113,7 +116,7 @@ public class MyVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
         LLVMTypeRef ft = LLVMFunctionType(returnType, argumentTypes, /* argumentCount */ paramSize, /* isVariadic */ 0);
         //若仅需一个参数也可以使用如下方式直接生成函数类型
      //   LLVMTypeRef ft = LLVMFunctionType(returnType, i32Type, /* argumentCount */ 0, /* isVariadic */ 0);
-
+        funcProperty.put(funName,ft);
         //生成函数，即向之前创建的module中添加函数
         LLVMValueRef function = LLVMAddFunction(module, /*functionName:String*/funName, ft);
         currentScope.define(funName,function);
@@ -130,6 +133,8 @@ public class MyVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
 
         visitChildren(ctx);
 
+
+        if(returnType.equals(voidType))  LLVMBuildRet(builder, /*result:LLVMValueRef*/null);
         currentScope=currentScope.getEnclosingScope();
 
 
@@ -393,6 +398,7 @@ public class MyVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
         visitChildren(ctx);
         String funName=ctx.IDENT().getText();
         LLVMValueRef fun=currentScope.resolve(funName);
+
         int paramsSize=ctx.funcRParams()==null? 0:ctx.funcRParams().param().size();
         PointerPointer params=new PointerPointer(paramsSize);
         if(paramsSize!=0){
@@ -402,7 +408,12 @@ public class MyVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
                 params.put(i,value);
             }
         }
-       LLVMValueRef callVal=LLVMBuildCall(builder,fun,params,paramsSize,funName);
+        LLVMTypeRef ft=funcProperty.get(funName);
+        LLVMTypeRef returnType=LLVMGetReturnType(ft);
+        LLVMValueRef callVal;
+        if(returnType .equals(i32Type))
+                callVal=LLVMBuildCall(builder,fun,params,paramsSize,funName);
+        else  callVal=LLVMBuildCall(builder,fun,params,paramsSize,"");
         valueProperty.put(ctx,callVal);
 
 

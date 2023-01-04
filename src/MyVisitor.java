@@ -246,8 +246,59 @@ public class MyVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
         }
         return null;
     }
+    @Override public LLVMValueRef visitConstDef(SysYParser.ConstDefContext ctx) {
+        visitChildren(ctx);
+        String varName=ctx.IDENT().getText();
+        if(ctx.L_BRACKT().size()==0){
+            LLVMValueRef initval= valueProperty.get(ctx.constInitVal());
+            //申请一块能存放int型的内存
+            LLVMValueRef pointer = LLVMBuildAlloca(builder, i32Type, /*pointerName:String*/varName);
 
-    @Override public LLVMValueRef visitConstExp(SysYParser.ConstExpContext ctx) {
+            //将数值存入该内存
+            LLVMBuildStore(builder, initval, pointer);
+            currentScope.define(varName,pointer);
+        }
+        else {
+            List<SysYParser.ConstInitValContext> initValContexts = ctx.constInitVal().constInitVal();
+
+            // one dimension
+            int capacity = (int) LLVMConstIntGetSExtValue(valueProperty.get(ctx.constExp(0)));
+            LLVMTypeRef vectorType = LLVMVectorType(i32Type, capacity);
+
+            //申请一个可存放该vector类型的内存
+            LLVMValueRef vectorPointer = LLVMBuildAlloca(builder, vectorType, varName);
+            currentScope.define(varName, vectorPointer);
+            for (int i = 0; i < capacity; i++) {
+
+                LLVMValueRef initval;
+                if (i < initValContexts.size()) {
+                    SysYParser.ConstInitValContext initValContext = initValContexts.get(i);
+                    initval = valueProperty.get(initValContext);
+                } else initval = zero;
+                PointerPointer valuePointer = new PointerPointer<>(zero, LLVMConstInt(i32Type, i, 0));
+
+                LLVMValueRef res = LLVMBuildGEP(builder, vectorPointer, valuePointer, 2, "pointer");
+                LLVMBuildStore(builder, initval, res);
+            }
+        }
+
+            return null;
+    }
+    @Override public LLVMValueRef visitConstInitVal(SysYParser.ConstInitValContext ctx) {
+
+        visitChildren(ctx);
+
+        if(ctx.constExp()!=null){
+            valueProperty.put(ctx,valueProperty.get(ctx.constExp()));
+        }
+        else if(ctx.constInitVal()!=null){
+
+
+
+        }
+        return null;
+    }
+        @Override public LLVMValueRef visitConstExp(SysYParser.ConstExpContext ctx) {
         visitChildren(ctx);
         valueProperty.put(ctx,valueProperty.get(ctx.exp()));
         return  null;

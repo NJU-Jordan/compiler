@@ -53,7 +53,7 @@ public class Main
 
         MyVisitor myVisitor=new MyVisitor();
         myVisitor.visit(tree);
-  //      myVisitor.OutPutConsole();
+       // myVisitor.OutPutConsole();
         myVisitor.OutputFile(dest);
       }
 

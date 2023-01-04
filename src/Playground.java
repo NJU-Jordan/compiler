@@ -8,6 +8,7 @@ import java.util.List;
 public class Playground {
 
     public static int A(int A){
+
         return  2;
     }
     public static void main(String[] args) throws IOException {

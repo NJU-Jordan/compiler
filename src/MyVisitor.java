@@ -188,7 +188,7 @@ public class MyVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
         visitChildren(ctx);
         String varName=ctx.IDENT().getText();
         if(ctx.L_BRACKT().size()==0){
-            LLVMValueRef initval= valueProperty.get(ctx.initVal());
+            LLVMValueRef initval=ctx.initVal()==null?zero: valueProperty.get(ctx.initVal());
             //申请一块能存放int型的内存
             LLVMValueRef pointer = LLVMBuildAlloca(builder, i32Type, /*pointerName:String*/varName);
 
@@ -250,7 +250,7 @@ public class MyVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
         visitChildren(ctx);
         String varName=ctx.IDENT().getText();
         if(ctx.L_BRACKT().size()==0){
-            LLVMValueRef initval= valueProperty.get(ctx.constInitVal());
+            LLVMValueRef initval= ctx.constInitVal()==null?zero:valueProperty.get(ctx.constInitVal());
             //申请一块能存放int型的内存
             LLVMValueRef pointer = LLVMBuildAlloca(builder, i32Type, /*pointerName:String*/varName);
 
@@ -324,6 +324,12 @@ public class MyVisitor extends SysYParserBaseVisitor<LLVMValueRef> {
 
         LLVMValueRef result = valueProperty.get(ctx.exp());
         LLVMBuildRet(builder, /*result:LLVMValueRef*/result);
+        return null;
+    }
+    @Override public LLVMValueRef visitExpStmt(SysYParser.ExpStmtContext ctx) {
+        isLoadedValue.put(ctx,true);
+        visitChildren(ctx);
+
         return null;
     }
     //lVal
